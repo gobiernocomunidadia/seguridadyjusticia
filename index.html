@@ -248,23 +248,41 @@
         let datosGlobales = []; // Almacena todos los datos del JSON
         let graficoEvolucion = null; // Instancia de Chart.js
 
-        // Utilidad para convertir la nueva fecha DD/MM/YYYY a formato estándar YYYY-MM-DD
+        // Utilidad ROBUSTA para convertir cualquier fecha extraña de Excel a YYYY-MM-DD
         function parsearFecha(fechaStr) {
             if (!fechaStr) return null;
-            if (fechaStr.includes('/')) {
-                const partes = fechaStr.split('/');
-                if (partes.length === 3) {
-                    return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+            let str = String(fechaStr).trim();
+            
+            // Si ya viene como YYYY-MM-DD
+            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+
+            // Si viene con formato ISO completo con T
+            if (str.includes('T')) return str.split('T')[0];
+
+            // Si viene como DD/MM/YYYY o DD-MM-YYYY
+            if (str.includes('/') || str.includes('-')) {
+                const separador = str.includes('/') ? '/' : '-';
+                const partes = str.split(separador);
+                
+                if (partes.length >= 3) {
+                    let d = partes[0].trim().padStart(2, '0');
+                    let m = partes[1].trim().padStart(2, '0');
+                    let y = partes[2].trim();
+                    
+                    // Asegurar año de 4 dígitos (ej: 26 -> 2026)
+                    if (y.length === 2) y = '20' + y;
+                    // Prevenir que vengan horas pegadas al año
+                    if (y.length > 4) y = y.substring(0, 4);
+
+                    return `${y}-${m}-${d}`;
                 }
             }
-            if (fechaStr.includes('T')) {
-                return fechaStr.split('T')[0];
-            }
-            return fechaStr;
+            return null;
         }
 
         // Formatea fecha YYYY-MM-DD a DD/MM/YYYY para mostrar en el select
         function formatearFechaVista(fechaIso) {
+            if(!fechaIso) return "-";
             const partes = fechaIso.split('-');
             if (partes.length === 3) {
                 return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -274,6 +292,7 @@
 
         // Formatea fecha YYYY-MM-DD a DD/MM para el gráfico
         function formatearFechaGrafico(fechaIso) {
+            if(!fechaIso) return "-";
             const partes = fechaIso.split('-');
             if (partes.length >= 3) {
                 return `${partes[2]}/${partes[1]}`;
@@ -316,8 +335,8 @@
             };
 
             datosFiltrados.forEach(item => {
-                const estado = (item.estado || "").trim().toUpperCase();
-                const noSalioHoy = item.no_salió_a_servicio_hoy; // Valor booleano (true/false)
+                const estado = item.estado.toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy; 
 
                 // Lógica de clasificación estricta
                 if (estado.includes("OPERATIVO") && noSalioHoy === false) {
@@ -349,29 +368,24 @@
             let htmlBajas = '';
 
             datosFiltrados.forEach(item => {
-                const estado = (item.estado || "").trim().toUpperCase();
+                const estado = item.estado.toUpperCase();
                 const noSalioHoy = item.no_salió_a_servicio_hoy;
                 
-                const dominio = item.dominio || "S/D";
-                const direccion = item.dirección || "SIN ESPECIFICAR";
-                const tipo = item.tipo || "Vehículo";
-                const razon = (typeof item.razón === 'string' && item.razón.trim() !== "") ? item.razón.trim() : "-";
-
-                // Plantilla de la fila (ahora incluye siempre 4 columnas: Vehículo, Área, Estado, Razón)
+                // Plantilla de la fila (4 columnas garantizadas: Vehículo, Área, Estado, Razón)
                 const filaHTML = `
                     <tr class="border-b border-white/10 hover:bg-white/10 transition-colors">
                         <td class="px-3 py-3">
-                            <div class="font-mono font-bold text-white">${dominio}</div>
-                            <div class="text-[10px] text-gray-300 uppercase">${tipo}</div>
+                            <div class="font-mono font-bold text-white">${item.dominio}</div>
+                            <div class="text-[10px] text-gray-300 uppercase">${item.tipo}</div>
                         </td>
-                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${direccion}">
-                            ${direccion}
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${item.dirección}">
+                            ${item.dirección}
                         </td>
-                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${item.estado || 'S/D'}">
-                            <div class="font-semibold">${item.estado || 'S/D'}</div>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${item.estado}">
+                            <div class="font-semibold">${item.estado}</div>
                         </td>
-                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[110px] italic text-gray-300" title="${razon}">
-                            ${razon}
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[110px] italic text-gray-300" title="${item.razón}">
+                            ${item.razón}
                         </td>
                     </tr>
                 `;
@@ -397,11 +411,13 @@
 
         // Genera y actualiza el Gráfico de los últimos 30 días
         function actualizarGrafico(direccionSeleccionada) {
-            // 1. Obtener la fecha más reciente disponible
+            // 1. Validar que exista al menos una fecha global válida
             if (!window.fechasUnicasGlobales || window.fechasUnicasGlobales.length === 0) return;
+            
+            // 2. Tomar la fecha máxima para hacer el retroceso (se le agrega T12:00:00 para evitar desajustes de timezone)
             const fechaMaxima = new Date(window.fechasUnicasGlobales[0] + 'T12:00:00');
 
-            // 2. Generar un arreglo con las fechas de los últimos 30 días
+            // 3. Generar un arreglo con las fechas de los últimos 30 días
             const ultimos30DiasIso = [];
             for (let i = 29; i >= 0; i--) {
                 const d = new Date(fechaMaxima);
@@ -409,13 +425,13 @@
                 ultimos30DiasIso.push(d.toISOString().split('T')[0]);
             }
 
-            // 3. Filtrar por la dirección seleccionada (ignorando el filtro de fecha actual para ver la historia)
+            // 4. Filtrar por la dirección seleccionada (ignorando el filtro de fecha actual para ver la historia completa)
             let datosArea = datosGlobales;
             if (direccionSeleccionada !== "TODAS") {
-                datosArea = datosGlobales.filter(item => (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada);
+                datosArea = datosGlobales.filter(item => item.dirección === direccionSeleccionada);
             }
 
-            // 4. Calcular los 4 indicadores día por día
+            // 5. Calcular los 4 indicadores día por día
             const dataOp = [];
             const dataSinSalida = [];
             const dataTaller = [];
@@ -427,7 +443,7 @@
                 let op = 0, sinSalida = 0, taller = 0, baja = 0;
 
                 registrosDia.forEach(item => {
-                    const estado = (item.estado || "").trim().toUpperCase();
+                    const estado = item.estado.toUpperCase();
                     const noSalioHoy = item.no_salió_a_servicio_hoy;
 
                     if (estado.includes("OPERATIVO") && noSalioHoy === false) {
@@ -447,11 +463,13 @@
                 dataBaja.push(baja);
             });
 
-            // 5. Preparar las etiquetas (eje X)
+            // 6. Preparar las etiquetas (eje X)
             const labels = ultimos30DiasIso.map(formatearFechaGrafico);
 
-            // 6. Configurar/Actualizar Chart.js
-            const ctx = document.getElementById('evolucionChart').getContext('2d');
+            // 7. Configurar/Actualizar Chart.js
+            const canvasEl = document.getElementById('evolucionChart');
+            if(!canvasEl) return;
+            const ctx = canvasEl.getContext('2d');
             
             const datasets = [
                 {
@@ -522,22 +540,20 @@
             }
         }
 
-        // Función central que lee selects y actualiza la vista (Corregida)
+        // Función central que lee selects y actualiza la vista
         function aplicarFiltros() {
-            const fechaSeleccionada = document.getElementById("filtro-fecha").value;
-            const direccionSeleccionada = document.getElementById("filtro-direccion").value;
+            const selectFecha = document.getElementById("filtro-fecha");
+            const selectDir = document.getElementById("filtro-direccion");
+            
+            const fechaSeleccionada = selectFecha ? selectFecha.value : "";
+            const direccionSeleccionada = selectDir ? selectDir.value : "TODAS";
 
             // Filtro por Fecha (Aplica a KPIs y Tablas)
-            let datosFiltrados = datosGlobales.filter(item => {
-                if (!item.fecha_iso) return false;
-                return item.fecha_iso === fechaSeleccionada;
-            });
+            let datosFiltrados = datosGlobales.filter(item => item.fecha_iso === fechaSeleccionada);
 
             // Filtro por Dirección
             if (direccionSeleccionada !== "TODAS") {
-                datosFiltrados = datosFiltrados.filter(item => 
-                    (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada
-                );
+                datosFiltrados = datosFiltrados.filter(item => item.dirección === direccionSeleccionada);
             }
 
             // Actualizar vista completa
@@ -555,51 +571,80 @@
 
                 let rawData = await respuesta.json();
 
-                // SANITIZACIÓN DE DATOS (Se hace una sola vez al inicio)
+                // FUNCION DE EXTRACCIÓN ROBUSTA (A prueba de JSON exportados desde Excel)
+                // Busca la información incluso si las columnas tienen un espacio al final, ej: "fecha " en lugar de "fecha"
                 datosGlobales = rawData.map(item => {
-                    if (typeof item.dirección === 'string') {
-                        item.dirección = item.dirección.trim();
-                    } else {
-                        item.dirección = "SIN ESPECIFICAR";
-                    }
-                    if (typeof item.estado === 'string') {
-                        item.estado = item.estado.trim();
-                    }
-                    // Parsear y estandarizar la fecha
-                    item.fecha_iso = parsearFecha(item.fecha);
-                    return item;
+                    const obtenerValor = (opciones) => {
+                        for(let opc of opciones) {
+                            if(item[opc] !== undefined && item[opc] !== null) return item[opc];
+                        }
+                        return null;
+                    };
+
+                    const dir = obtenerValor(["dirección", "direccion", "dirección ", "Dirección"]) || "SIN ESPECIFICAR";
+                    const est = obtenerValor(["estado", "estado ", "Estado"]) || "SIN ESTADO";
+                    const noSalio = obtenerValor(["no_salió_a_servicio_hoy", "no_salió_a_servicio_hoy ", "no_salio_a_servicio_hoy"]);
+                    const fec = obtenerValor(["fecha", "fecha ", "Fecha"]);
+                    const dom = obtenerValor(["dominio", "dominio ", "Dominio"]) || "S/D";
+                    const tip = obtenerValor(["tipo", "tipo ", "Tipo"]) || "Vehículo";
+                    const raz = obtenerValor(["razón", "razon", "razón ", "Razón"]) || "-";
+
+                    // Interpretación robusta del valor booleano
+                    const isNoSalio = (noSalio === true || String(noSalio).trim().toLowerCase() === "true");
+
+                    return {
+                        dirección: String(dir).trim(),
+                        estado: String(est).trim(),
+                        no_salió_a_servicio_hoy: isNoSalio,
+                        fecha_iso: parsearFecha(fec),
+                        dominio: String(dom).trim(),
+                        tipo: String(tip).trim(),
+                        razón: String(raz).trim()
+                    };
                 });
 
-                // Obtener fechas únicas válidas
+                // Obtener fechas únicas que hayan sido parseadas correctamente (YYYY-MM-DD)
                 const fechasValidas = datosGlobales
                     .map(item => item.fecha_iso)
-                    .filter(f => f && !isNaN(new Date(f + 'T12:00:00').getTime())); 
+                    .filter(f => f && /^\d{4}-\d{2}-\d{2}$/.test(f)); // Filtro estricto anti-NaN
 
                 const fechasUnicas = [...new Set(fechasValidas)].sort((a, b) => new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00'));
                 window.fechasUnicasGlobales = fechasUnicas;
 
-                // Poblar select de Fechas
                 const selectFecha = document.getElementById("filtro-fecha");
-                fechasUnicas.forEach(fecha => {
+                selectFecha.innerHTML = ""; // Limpiar antes de llenar
+
+                if (fechasUnicas.length === 0) {
                     const option = document.createElement("option");
-                    option.value = fecha;
-                    option.textContent = formatearFechaVista(fecha);
+                    option.value = "";
+                    option.textContent = "No hay fechas detectadas";
                     selectFecha.appendChild(option);
-                });
-                
-                // Seleccionar "el día de hoy" por defecto, o la más reciente
-                const hoy = new Date();
-                const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
-                
-                if (fechasUnicas.includes(hoyIso)) {
-                    selectFecha.value = hoyIso;
-                } else if (fechasUnicas.length > 0) {
-                    selectFecha.value = fechasUnicas[0];
+                    console.warn("No se detectaron fechas válidas en el JSON. Verifica el formato de tu columna 'fecha'.");
+                } else {
+                    // Poblar select de Fechas
+                    fechasUnicas.forEach(fecha => {
+                        const option = document.createElement("option");
+                        option.value = fecha;
+                        option.textContent = formatearFechaVista(fecha);
+                        selectFecha.appendChild(option);
+                    });
+                    
+                    // Seleccionar "el día de hoy" por defecto, o la más reciente
+                    const hoy = new Date();
+                    const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+                    
+                    if (fechasUnicas.includes(hoyIso)) {
+                        selectFecha.value = hoyIso;
+                    } else {
+                        selectFecha.value = fechasUnicas[0];
+                    }
                 }
 
                 // Poblar select de Direcciones unificadas
                 const direccionesUnicas = [...new Set(datosGlobales.map(item => item.dirección))].sort();
                 const selectDireccion = document.getElementById("filtro-direccion");
+                selectDireccion.innerHTML = '<option value="TODAS">TODAS LAS ÁREAS</option>';
+                
                 direccionesUnicas.forEach(dir => {
                     const option = document.createElement("option");
                     option.value = dir;
@@ -620,7 +665,7 @@
                 document.getElementById("kpi-sin-salida").innerText = "-";
                 document.getElementById("kpi-taller").innerText = "-";
                 document.getElementById("kpi-bajas").innerText = "-";
-                alert("No se pudo cargar el archivo data.json. Revise la consola para más detalles.");
+                alert("Hubo un problema procesando el archivo data.json. Por favor revisa la estructura de los datos.");
             }
         };
     </script>
