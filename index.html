@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Flota Vehicular - Secretaría de Seguridad</title>
+    <title>Control Flota Vehicular - Secretaria de Seguridad y Justicia</title>
     
     <!-- Tailwind CSS para el diseño rápido y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,28 +15,34 @@
     
     <style>
         :root {
-            --bg-main: #19567C;
-            --blanco: #FFFFFF;
-            --acento: #4AB5E0;
-            --magenta: #D34872;
+            /* Colores Institucionales */
             --azul-inst: #19567C;
+            --blanco: #FFFFFF;
+            
+            /* Gama de Azules para las Tarjetas */
+            --azul-claro: #4AB5E0;    /* Operativos (Celeste Brillante) */
+            --azul-medio: #2980B9;    /* Sin Salida (Azul Medio) */
+            --azul-oscuro: #1F618D;   /* Taller (Azul Oscuro) */
+            --azul-marino: #154360;   /* Bajas (Azul Marino Profundo) */
         }
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
+            background-color: var(--azul-inst);
+            color: var(--blanco);
+            min-height: 100vh;
         }
 
-        .header-bg { 
-            background-color: var(--bg-main); 
-            color: var(--blanco); 
+        .glass-panel { 
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .kpi-card {
             background: var(--blanco);
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
             padding: 1.5rem;
             text-align: center;
             transition: transform 0.2s ease;
@@ -46,210 +52,111 @@
             transform: translateY(-5px);
         }
 
-        .table-container {
-            background: var(--blanco);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            max-height: 400px;
-            overflow-y: auto;
+        /* Estilo personalizado para los selects */
+        select {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2319567C' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
-
-        th {
-            background-color: var(--bg-main);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        /* Diseño del Scrollbar para las tablas */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <!-- Encabezado del Dashboard -->
-    <div class="header-bg p-6 rounded-xl shadow-md mb-8 flex flex-col md:flex-row justify-between items-center">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-extrabold uppercase tracking-wide">Dashboard Flota Vehicular</h1>
-            <p class="text-sm opacity-80 mt-1">Secretaría de Seguridad - Municipio de Lomas de Zamora</p>
-        </div>
-        <div class="mt-4 md:mt-0 bg-white/20 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/30">
-            <p class="text-sm font-semibold flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Actualizado en tiempo real
-            </p>
-        </div>
+    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Control Flota Vehicular</h1>
+        <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Secretaría de Seguridad y Justicia</p>
     </div>
 
-    <!-- Sección Filtro por Área -->
-    <div class="mb-8 bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between">
-        <label for="filtro-area" class="font-bold text-[var(--azul-inst)] mb-2 md:mb-0 md:mr-4 uppercase tracking-wide text-sm flex items-center">
-            <svg class="w-5 h-5 mr-2 text-[var(--acento)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-            Filtrar por Área / Dirección:
-        </label>
-        <select id="filtro-area" class="w-full md:w-2/3 p-2.5 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[var(--acento)] font-semibold text-gray-700 bg-gray-50 cursor-pointer transition-colors">
-            <option value="TODAS">MOSTRAR TODAS LAS ÁREAS</option>
-        </select>
-    </div>
-
-    <!-- Título Dinámico de KPIs -->
-    <div class="mb-4">
-        <h2 id="kpi-titulo" class="text-xl font-bold text-[var(--azul-inst)] uppercase tracking-wide border-b-2 border-[var(--acento)] pb-2 inline-block">
-            Totales Globales (Todas las Áreas)
-        </h2>
-    </div>
-
-    <!-- Sección de KPIs (Tarjetas numéricas) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="kpi-card border-b-4 border-[var(--azul-inst)]">
-            <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Total Flota Histórica</h3>
-            <p class="text-5xl font-extrabold text-[var(--azul-inst)] mt-2" id="kpi-total">0</p>
-        </div>
-        <div class="kpi-card border-b-4 border-[var(--acento)]">
-            <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Móviles Operativos</h3>
-            <p class="text-5xl font-extrabold text-[var(--acento)] mt-2" id="kpi-operativos">0</p>
-        </div>
-        <div class="kpi-card border-b-4 border-[var(--magenta)]">
-            <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Móviles No Operativos</h3>
-            <p class="text-5xl font-extrabold text-[var(--magenta)] mt-2" id="kpi-no-operativos">0</p>
-        </div>
-    </div>
-
-    <!-- Sección de Tablas Principales -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Contenedor de Filtros -->
+    <div class="max-w-7xl mx-auto mb-8 glass-panel p-4 rounded-xl flex flex-col md:flex-row gap-6 items-center justify-between">
         
-        <!-- Tabla 1: Flota Operativa por Área -->
-        <div>
-            <h2 class="text-lg font-bold text-[var(--azul-inst)] mb-4 flex items-center uppercase tracking-wide">
-                <span class="w-3 h-3 rounded-full bg-[var(--acento)] mr-2 shadow-sm"></span> 
-                Operativos por Dirección
-            </h2>
-            <div class="table-container">
-                <table class="min-w-full table-auto">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4 text-left font-semibold text-sm">Área / Dirección</th>
-                            <th class="py-3 px-4 text-center font-semibold text-sm">Cantidad</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-operativos">
-                        <!-- Llenado por JS -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
+            <label for="filtro-fecha" class="text-white font-bold uppercase tracking-wider text-sm whitespace-nowrap">
+                Filtrar por Fecha:
+            </label>
+            <select id="filtro-fecha" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
+                <!-- Opciones inyectadas vía JS -->
+            </select>
         </div>
 
-        <!-- Tabla 2: No Operativos (Excluyendo bajas definitivas) -->
-        <div>
-            <h2 class="text-lg font-bold text-[var(--azul-inst)] mb-4 flex items-center uppercase tracking-wide">
-                <span class="w-3 h-3 rounded-full bg-[var(--magenta)] mr-2 shadow-sm"></span> 
-                Vehículos con Novedades (Taller)
-            </h2>
-            <div class="table-container">
-                <table class="min-w-full table-auto text-sm">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4 text-left font-semibold">Área</th>
-                            <th class="py-3 px-4 text-center font-semibold">Dominio</th>
-                            <th class="py-3 px-4 text-left font-semibold">Motivo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-novedades">
-                        <!-- Llenado por JS -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
+            <label for="filtro-direccion" class="text-white font-bold uppercase tracking-wider text-sm whitespace-nowrap">
+                Área / Dirección:
+            </label>
+            <select id="filtro-direccion" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
+                <option value="TODAS">TODAS LAS ÁREAS</option>
+                <!-- Opciones inyectadas vía JS -->
+            </select>
         </div>
+
     </div>
 
-    <!-- Sección Inferior: Bajas -->
-    <div>
-        <h2 class="text-lg font-bold text-[var(--azul-inst)] mb-4 flex items-center uppercase tracking-wide">
-            <span class="w-3 h-3 rounded-full bg-gray-500 mr-2 shadow-sm"></span> 
-            Vehículos Radiados / Dados de Baja
+    <!-- Contenedor Principal de KPIs -->
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
+            Resumen de Estado de Flota
         </h2>
-        <div class="table-container" style="max-height: 300px;">
-            <table class="min-w-full table-auto text-sm">
-                <thead>
-                    <tr>
-                        <th class="py-3 px-4 text-left font-semibold bg-gray-700">Área Histórica</th>
-                        <th class="py-3 px-4 text-center font-semibold bg-gray-700">Dominio</th>
-                        <th class="py-3 px-4 text-left font-semibold bg-gray-700">Estado de Baja</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-bajas">
-                    <!-- Llenado por JS -->
-                </tbody>
-            </table>
+
+        <!-- Grid de Tarjetas (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- KPI 1: Operativos (Celeste) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-claro)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos Operativos</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-claro)] mt-3 drop-shadow-sm" id="kpi-operativos">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">En servicio y circulando</p>
+            </div>
+
+            <!-- KPI 2: Operativos Sin Salida (Azul Medio) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-medio)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Operativos Sin Salida</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-medio)] mt-3 drop-shadow-sm" id="kpi-sin-salida">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">No salieron a servicio hoy</p>
+            </div>
+
+            <!-- KPI 3: No Operativos / Taller (Azul Oscuro) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-oscuro)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">No Operativos / Taller</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-oscuro)] mt-3 drop-shadow-sm" id="kpi-taller">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">Con novedades mecánicas</p>
+            </div>
+
+            <!-- KPI 4: Para Baja (Azul Marino Profundo) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-marino)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos para Baja</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-marino)] mt-3 drop-shadow-sm" id="kpi-bajas">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">Bajas y posibles bajas</p>
+            </div>
+
         </div>
     </div>
 
-    <!-- Script de Inyección de Datos -->
+    <!-- Script de Inyección y Procesamiento de Datos -->
     <script>
-        // Estructura de datos vacía, lista para integrarse con un backend o base de datos
-        const data = {
-            kpi: {
-                total: 0,
-                operativos: 0,
-                noOperativos: 0
-            },
-            operativosArea: [],
-            novedades: [],
-            bajas: []
-        };
+        let datosGlobales = []; // Almacena todos los datos del JSON
 
-        // Función que transforma los datos del JSON al formato que necesita el Dashboard
-        function procesarDatos(rawData) {
-            let opCount = 0;
-            let noOpCount = 0;
-            const opMap = {}; // Para agrupar operativos por dirección
-
-            rawData.forEach(item => {
-                const dir = item.dirección || "SIN ESPECIFICAR";
-                const dom = item.dominio || "S/D";
-                const estado = (item.estado || "SIN ESTADO").trim();
-                const estadoUpper = estado.toUpperCase();
-
-                // Lógica de clasificación según tu JSON
-                const esBaja = estadoUpper.includes("BAJA") || estadoUpper === "RADIADO";
-                const esOperativo = estadoUpper === "OPERATIVO";
-
-                if (esOperativo) {
-                    opCount++;
-                    if (!opMap[dir]) opMap[dir] = 0;
-                    opMap[dir]++;
-                } else if (esBaja) {
-                    noOpCount++;
-                    data.bajas.push({ dir, dom, mot: estado });
-                } else {
-                    // Novedades (Taller externo, municipal, etc.)
-                    noOpCount++;
-                    data.novedades.push({ dir, dom, mot: estado });
-                }
-            });
-
-            // Asignar los totales calculados
-            data.kpi.total = rawData.length;
-            data.kpi.operativos = opCount;
-            data.kpi.noOperativos = noOpCount;
-
-            // Convertir el mapa de operativos a array y ordenarlo de mayor a menor
-            data.operativosArea = Object.keys(opMap).map(dir => ({
-                dir: dir,
-                cant: opMap[dir]
-            })).sort((a, b) => b.cant - a.cant);
+        // Formatea fecha YYYY-MM-DD a DD/MM/YYYY para mostrar en el select
+        function formatearFechaVista(fechaIso) {
+            const partes = fechaIso.split('-');
+            if (partes.length === 3) {
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            return fechaIso;
         }
 
-        // Animación simple de contadores (opcional para darle un toque premium)
+        // Animación simple de contadores numéricos
         function animarContador(id, finalValue) {
             let startValue = 0;
-            let duration = 1000;
-            let step = Math.max((finalValue / duration) * 15, 1); // Evitar pasos en 0
+            let duration = 1000; // 1 segundo
+            let stepTime = 20; 
+            let steps = duration / stepTime;
+            let increment = finalValue / steps;
             let element = document.getElementById(id);
             
             if (finalValue === 0) {
@@ -258,138 +165,127 @@
             }
 
             let timer = setInterval(() => {
-                startValue += step;
+                startValue += increment;
                 if (startValue >= finalValue) {
                     clearInterval(timer);
                     element.innerText = finalValue;
                 } else {
                     element.innerText = Math.floor(startValue);
                 }
-            }, 15);
+            }, stepTime);
         }
 
-        // Poblar el menú desplegable (Select) automáticamente con las áreas existentes
-        function poblarFiltros() {
-            const selectArea = document.getElementById("filtro-area");
-            const areas = new Set();
-            
-            // Recopilar áreas de todas las tablas
-            data.operativosArea.forEach(item => areas.add(item.dir));
-            data.novedades.forEach(item => areas.add(item.dir));
-            data.bajas.forEach(item => areas.add(item.dir));
-            
-            // Ordenar alfabéticamente y agregar opciones al HTML
-            const areasOrdenadas = Array.from(areas).sort();
-            areasOrdenadas.forEach(area => {
-                const option = document.createElement("option");
-                option.value = area;
-                option.textContent = area;
-                selectArea.appendChild(option);
+        // Calcula e inyecta los KPIs basándose en el dataset filtrado
+        function calcularKPIs(datosFiltrados) {
+            let kpis = {
+                operativos: 0,
+                sinSalida: 0,
+                taller: 0,
+                baja: 0
+            };
+
+            datosFiltrados.forEach(item => {
+                const estado = (item.estado || "").trim().toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy; // Valor booleano (true/false)
+
+                // Lógica de clasificación estricta solicitada
+                if (estado.includes("OPERATIVO") && noSalioHoy === false) {
+                    // Estado Operativo Y salió a servicio
+                    kpis.operativos++;
+                } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                    // Estado Operativo Y NO salió a servicio
+                    kpis.sinSalida++;
+                } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                    // Bajas o Radiados
+                    kpis.baja++;
+                } else {
+                    // Taller u otros estados (Taller externo, municipal, verificar estado, etc.)
+                    kpis.taller++;
+                }
             });
 
-            // Evento cuando se cambia el filtro
-            selectArea.addEventListener("change", (e) => {
-                renderDashboard(e.target.value, false);
-            });
+            // Animar los resultados en la pantalla
+            animarContador("kpi-operativos", kpis.operativos);
+            animarContador("kpi-sin-salida", kpis.sinSalida);
+            animarContador("kpi-taller", kpis.taller);
+            animarContador("kpi-bajas", kpis.baja);
         }
 
-        // Función central para dibujar/actualizar todo el dashboard
-        function renderDashboard(filtroArea, cargaInicial = false) {
-            let opFiltrados, novFiltradas, bajasFiltradas;
-            let kpiTotal, kpiOp, kpiNoOp;
-            const kpiTitulo = document.getElementById("kpi-titulo");
+        // Función que lee los valores de los selects y aplica los filtros
+        function aplicarFiltros() {
+            const fechaSeleccionada = document.getElementById("filtro-fecha").value;
+            const direccionSeleccionada = document.getElementById("filtro-direccion").value;
 
-            // Lógica del filtro
-            if (filtroArea === "TODAS") {
-                opFiltrados = data.operativosArea;
-                novFiltradas = data.novedades;
-                bajasFiltradas = data.bajas;
-                kpiTotal = data.kpi.total;
-                kpiOp = data.kpi.operativos;
-                kpiNoOp = data.kpi.noOperativos;
-                kpiTitulo.innerText = "Totales Globales (Todas las Áreas)";
-            } else {
-                opFiltrados = data.operativosArea.filter(item => item.dir === filtroArea);
-                novFiltradas = data.novedades.filter(item => item.dir === filtroArea);
-                bajasFiltradas = data.bajas.filter(item => item.dir === filtroArea);
-                
-                // Recalcular KPIs dinámicos locales
-                kpiOp = opFiltrados.reduce((acc, curr) => acc + curr.cant, 0);
-                kpiNoOp = novFiltradas.length + bajasFiltradas.length; // (Considerando las muestras actuales)
-                kpiTotal = kpiOp + kpiNoOp;
-                kpiTitulo.innerText = "Totales del Sector: " + filtroArea;
+            // Filtro por Fecha (Extrae la porción YYYY-MM-DD del item.fecha)
+            let datosFiltrados = datosGlobales.filter(item => {
+                if (!item.fecha) return false;
+                return item.fecha.startsWith(fechaSeleccionada);
+            });
+
+            // Filtro por Dirección (Si no es "TODAS")
+            if (direccionSeleccionada !== "TODAS") {
+                datosFiltrados = datosFiltrados.filter(item => 
+                    (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada
+                );
             }
 
-            // Renderizar KPIs
-            if (cargaInicial) {
-                animarContador("kpi-total", kpiTotal);
-                animarContador("kpi-operativos", kpiOp);
-                animarContador("kpi-no-operativos", kpiNoOp);
-            } else {
-                document.getElementById("kpi-total").innerText = kpiTotal;
-                document.getElementById("kpi-operativos").innerText = kpiOp;
-                document.getElementById("kpi-no-operativos").innerText = kpiNoOp;
-            }
-
-            // Renderizar Tabla Operativos
-            const tbodyOp = document.getElementById("tabla-operativos");
-            tbodyOp.innerHTML = "";
-            if(opFiltrados.length === 0) tbodyOp.innerHTML = `<tr><td colspan="2" class="py-4 px-4 text-center font-semibold text-gray-400">Sin registros operativos en esta área.</td></tr>`;
-            opFiltrados.forEach(item => {
-                tbodyOp.innerHTML += `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td class="py-3 px-4 text-left font-medium text-gray-700">${item.dir}</td>
-                        <td class="py-3 px-4 text-center font-bold text-[var(--acento)] text-lg">${item.cant}</td>
-                    </tr>
-                `;
-            });
-
-            // Renderizar Tabla Novedades
-            const tbodyNov = document.getElementById("tabla-novedades");
-            tbodyNov.innerHTML = "";
-            if(novFiltradas.length === 0) tbodyNov.innerHTML = `<tr><td colspan="3" class="py-4 px-4 text-center font-semibold text-gray-400">No hay vehículos en taller para esta área.</td></tr>`;
-            novFiltradas.forEach(item => {
-                tbodyNov.innerHTML += `
-                    <tr class="border-b border-gray-100 hover:bg-red-50 transition-colors">
-                        <td class="py-2 px-4 text-left text-gray-700">${item.dir}</td>
-                        <td class="py-2 px-4 text-center font-bold text-gray-900 bg-gray-100 rounded">${item.dom}</td>
-                        <td class="py-2 px-4 text-left text-[var(--magenta)] font-semibold text-xs">${item.mot}</td>
-                    </tr>
-                `;
-            });
-
-            // Renderizar Tabla Bajas
-            const tbodyBajas = document.getElementById("tabla-bajas");
-            tbodyBajas.innerHTML = "";
-            if(bajasFiltradas.length === 0) tbodyBajas.innerHTML = `<tr><td colspan="3" class="py-4 px-4 text-center font-semibold text-gray-400">No hay historial de bajas para esta área.</td></tr>`;
-            bajasFiltradas.forEach(item => {
-                tbodyBajas.innerHTML += `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors opacity-70">
-                        <td class="py-2 px-4 text-left text-gray-600">${item.dir}</td>
-                        <td class="py-2 px-4 text-center font-mono text-gray-500">${item.dom}</td>
-                        <td class="py-2 px-4 text-left text-gray-500 italic text-xs">${item.mot}</td>
-                    </tr>
-                `;
-            });
+            // Recalcular KPIs con el nuevo subconjunto de datos
+            calcularKPIs(datosFiltrados);
         }
 
-        // Ejecutar al cargar la página consumiendo el archivo data.json
+        // Ejecutar al cargar la página
         window.onload = async () => {
             try {
                 // Hacer el fetch de data.json
                 const respuesta = await fetch('data.json');
                 if (!respuesta.ok) throw new Error("Error HTTP " + respuesta.status);
 
-                const datosCrudos = await respuesta.json();
+                datosGlobales = await respuesta.json();
+
+                // 1. Obtener fechas únicas, ordenadas de más reciente a más antigua
+                const fechasUnicas = [...new Set(datosGlobales.map(item => {
+                    return item.fecha ? item.fecha.split('T')[0] : null;
+                }).filter(f => f))].sort((a, b) => new Date(b) - new Date(a));
+
+                // Poblar select de Fechas
+                const selectFecha = document.getElementById("filtro-fecha");
+                fechasUnicas.forEach(fecha => {
+                    const option = document.createElement("option");
+                    option.value = fecha;
+                    option.textContent = formatearFechaVista(fecha);
+                    selectFecha.appendChild(option);
+                });
                 
-                // Procesar el JSON, poblar filtros y renderizar
-                procesarDatos(datosCrudos);
-                poblarFiltros();
-                renderDashboard("TODAS", true);
+                // La fecha más reciente queda seleccionada por defecto al ser la primera (index 0)
+
+                // 2. Obtener Direcciones únicas, ordenadas alfabéticamente
+                const direccionesUnicas = [...new Set(datosGlobales.map(item => 
+                    item.dirección || "SIN ESPECIFICAR"
+                ))].sort();
+
+                // Poblar select de Direcciones
+                const selectDireccion = document.getElementById("filtro-direccion");
+                direccionesUnicas.forEach(dir => {
+                    const option = document.createElement("option");
+                    option.value = dir;
+                    option.textContent = dir;
+                    selectDireccion.appendChild(option);
+                });
+
+                // 3. Asignar Event Listeners a los filtros para que se actualicen al cambiar
+                selectFecha.addEventListener("change", aplicarFiltros);
+                selectDireccion.addEventListener("change", aplicarFiltros);
+
+                // 4. Aplicar filtros iniciales (Última fecha y Todas las direcciones)
+                aplicarFiltros();
+
             } catch (error) {
                 console.error("Error inicializando el dashboard:", error);
-                document.getElementById("kpi-titulo").innerText = "Error cargando data.json. Revisa la consola.";
-                document.getElementById("kpi-titulo").classList.add("text-red-500");
+                document.getElementById("kpi-operativos").innerText = "-";
+                document.getElementById("kpi-sin-salida").innerText = "-";
+                document.getElementById("kpi-taller").innerText = "-";
+                document.getElementById("kpi-bajas").innerText = "-";
+                alert("No se pudo cargar el archivo data.json. Asegúrese de estar ejecutando un servidor local.");
             }
         };
     </script>
