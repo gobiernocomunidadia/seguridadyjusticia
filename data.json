@@ -86684,7 +86684,7 @@
     "tipo": "Moto",
     "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "",
+    "razón": "Falta de chofer",
     "fecha": "18/05/2026"
   },
   {
@@ -86746,7 +86746,7 @@
     "dominio": "A130LJP",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": "",
     "fecha": "18/05/2026"
   },
@@ -86755,7 +86755,7 @@
     "dominio": "A145FPA",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": "",
     "fecha": "18/05/2026"
   },
@@ -86773,7 +86773,7 @@
     "dominio": "AE478AQ",
     "tipo": "Auto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": "",
     "fecha": "18/05/2026"
   },
