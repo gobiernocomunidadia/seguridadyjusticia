@@ -84316,8 +84316,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "18/05/2026"
   },
   {
@@ -84406,8 +84406,8 @@
     "dominio": "A145FPJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "18/05/2026"
   },
   {
@@ -84415,8 +84415,8 @@
     "dominio": "A179FSE",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "18/05/2026"
   },
   {
@@ -84523,8 +84523,8 @@
     "dominio": "A179FSY",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "18/05/2026"
   },
   {
@@ -86241,8 +86241,8 @@
     "dirección": "CPU",
     "dominio": "AH375EG",
     "tipo": "Camioneta",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": "Falla mecánica",
     "fecha": "18/05/2026"
   },
