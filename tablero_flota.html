@@ -72,12 +72,28 @@
             height: 350px;
             width: 100%;
         }
+
+        /* Estilo para las barras de desplazamiento en las tablas */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <!-- Encabezado del Dashboard -->
-    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8">
+    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8 relative">
         <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Control Flota Vehicular</h1>
         <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Secretaría de Seguridad y Justicia</p>
     </div>
@@ -147,7 +163,7 @@
     </div>
 
     <!-- Contenedor del Gráfico de Líneas -->
-    <div class="max-w-7xl mx-auto glass-panel p-6 rounded-xl shadow-lg">
+    <div class="max-w-7xl mx-auto glass-panel p-6 rounded-xl shadow-lg mb-8">
         <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
             Evolución de Estado (Últimos 30 días)
         </h2>
@@ -156,28 +172,117 @@
         </div>
     </div>
 
+    <!-- Contenedor de Tablas de Detalle -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        
+        <!-- Tabla: Operativos Sin Salida -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-medio)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
+                Operativos Sin Salida
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2">Estado</th>
+                            <th class="px-3 py-2 rounded-tr-md">Razón</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-sin-salida">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla: No Operativos / Taller -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-oscuro)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
+                No Operativos / Taller
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2">Estado</th>
+                            <th class="px-3 py-2 rounded-tr-md">Razón</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-taller">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla: Vehículos Para Baja -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-marino)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
+                Vehículos para Baja
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2">Estado</th>
+                            <th class="px-3 py-2 rounded-tr-md">Razón</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-bajas">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
     <!-- Script de Inyección y Procesamiento de Datos -->
     <script>
         let datosGlobales = []; // Almacena todos los datos del JSON
         let graficoEvolucion = null; // Instancia de Chart.js
 
-        // Utilidad para convertir la nueva fecha DD/MM/YYYY a formato estándar YYYY-MM-DD
+        // Utilidad ROBUSTA para convertir cualquier fecha extraña de Excel a YYYY-MM-DD
         function parsearFecha(fechaStr) {
             if (!fechaStr) return null;
-            if (fechaStr.includes('/')) {
-                const partes = fechaStr.split('/');
-                if (partes.length === 3) {
-                    return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+            let str = String(fechaStr).trim();
+            
+            // Si ya viene como YYYY-MM-DD
+            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+
+            // Si viene con formato ISO completo con T
+            if (str.includes('T')) return str.split('T')[0];
+
+            // Si viene como DD/MM/YYYY o DD-MM-YYYY
+            if (str.includes('/') || str.includes('-')) {
+                const separador = str.includes('/') ? '/' : '-';
+                const partes = str.split(separador);
+                
+                if (partes.length >= 3) {
+                    let d = partes[0].trim().padStart(2, '0');
+                    let m = partes[1].trim().padStart(2, '0');
+                    let y = partes[2].trim();
+                    
+                    // Asegurar año de 4 dígitos (ej: 26 -> 2026)
+                    if (y.length === 2) y = '20' + y;
+                    // Prevenir que vengan horas pegadas al año
+                    if (y.length > 4) y = y.substring(0, 4);
+
+                    return `${y}-${m}-${d}`;
                 }
             }
-            if (fechaStr.includes('T')) {
-                return fechaStr.split('T')[0];
-            }
-            return fechaStr;
+            return null;
         }
 
         // Formatea fecha YYYY-MM-DD a DD/MM/YYYY para mostrar en el select
         function formatearFechaVista(fechaIso) {
+            if(!fechaIso) return "-";
             const partes = fechaIso.split('-');
             if (partes.length === 3) {
                 return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -187,6 +292,7 @@
 
         // Formatea fecha YYYY-MM-DD a DD/MM para el gráfico
         function formatearFechaGrafico(fechaIso) {
+            if(!fechaIso) return "-";
             const partes = fechaIso.split('-');
             if (partes.length >= 3) {
                 return `${partes[2]}/${partes[1]}`;
@@ -229,40 +335,89 @@
             };
 
             datosFiltrados.forEach(item => {
-                const estado = (item.estado || "").trim().toUpperCase();
-                const noSalioHoy = item.no_salió_a_servicio_hoy; // Valor booleano (true/false)
+                const estado = item.estado.toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy; 
 
-                // Lógica de clasificación estricta solicitada
+                // Lógica de clasificación estricta
                 if (estado.includes("OPERATIVO") && noSalioHoy === false) {
-                    // Estado Operativo Y salió a servicio
                     kpis.operativos++;
                 } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
-                    // Estado Operativo Y NO salió a servicio
                     kpis.sinSalida++;
                 } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
-                    // Bajas o Radiados
                     kpis.baja++;
                 } else {
-                    // Taller u otros estados (Taller externo, municipal, verificar estado, etc.)
                     kpis.taller++;
                 }
             });
 
-            // Animar los resultados en la pantalla
+            // Animar los resultados
             animarContador("kpi-operativos", kpis.operativos);
             animarContador("kpi-sin-salida", kpis.sinSalida);
             animarContador("kpi-taller", kpis.taller);
             animarContador("kpi-bajas", kpis.baja);
         }
 
+        // Dibuja las filas de las 3 tablas con la columna Razón
+        function actualizarTablas(datosFiltrados) {
+            const tbSinSalida = document.getElementById('tabla-sin-salida');
+            const tbTaller = document.getElementById('tabla-taller');
+            const tbBajas = document.getElementById('tabla-bajas');
+
+            let htmlSinSalida = '';
+            let htmlTaller = '';
+            let htmlBajas = '';
+
+            datosFiltrados.forEach(item => {
+                const estado = item.estado.toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy;
+                
+                // Plantilla de la fila (4 columnas garantizadas: Vehículo, Área, Estado, Razón)
+                const filaHTML = `
+                    <tr class="border-b border-white/10 hover:bg-white/10 transition-colors">
+                        <td class="px-3 py-3">
+                            <div class="font-mono font-bold text-white">${item.dominio}</div>
+                            <div class="text-[10px] text-gray-300 uppercase">${item.tipo}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${item.dirección}">
+                            ${item.dirección}
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${item.estado}">
+                            <div class="font-semibold">${item.estado}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[110px] italic text-gray-300" title="${item.razón}">
+                            ${item.razón}
+                        </td>
+                    </tr>
+                `;
+
+                // Clasificamos exactamente igual que los KPIs
+                if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                    htmlSinSalida += filaHTML;
+                } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                    htmlBajas += filaHTML;
+                } else if (!(estado.includes("OPERATIVO") && noSalioHoy === false)) {
+                    // Taller (Cualquiera que no sea operativo puro ni baja)
+                    htmlTaller += filaHTML;
+                }
+            });
+
+            // Mensajes vacíos si no hay registros
+            const filaVacia = `<tr><td colspan="4" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
+
+            tbSinSalida.innerHTML = htmlSinSalida || filaVacia;
+            tbTaller.innerHTML = htmlTaller || filaVacia;
+            tbBajas.innerHTML = htmlBajas || filaVacia;
+        }
+
         // Genera y actualiza el Gráfico de los últimos 30 días
         function actualizarGrafico(direccionSeleccionada) {
-            // 1. Obtener la fecha más reciente disponible en los datos
-            const fechas = datosGlobales.map(d => d.fecha ? new Date(d.fecha.split('T')[0]) : null).filter(f => f);
-            if (fechas.length === 0) return;
-            const fechaMaxima = new Date(Math.max.apply(null, fechas));
+            // 1. Validar que exista al menos una fecha global válida
+            if (!window.fechasUnicasGlobales || window.fechasUnicasGlobales.length === 0) return;
+            
+            // 2. Tomar la fecha máxima para hacer el retroceso (se le agrega T12:00:00 para evitar desajustes de timezone)
+            const fechaMaxima = new Date(window.fechasUnicasGlobales[0] + 'T12:00:00');
 
-            // 2. Generar un arreglo con las fechas de los últimos 30 días (hasta la fecha máxima)
+            // 3. Generar un arreglo con las fechas de los últimos 30 días
             const ultimos30DiasIso = [];
             for (let i = 29; i >= 0; i--) {
                 const d = new Date(fechaMaxima);
@@ -270,26 +425,25 @@
                 ultimos30DiasIso.push(d.toISOString().split('T')[0]);
             }
 
-            // 3. Filtrar los datos base SOLO por la dirección seleccionada (ignoramos el filtro de fecha actual para el gráfico)
+            // 4. Filtrar por la dirección seleccionada (ignorando el filtro de fecha actual para ver la historia completa)
             let datosArea = datosGlobales;
             if (direccionSeleccionada !== "TODAS") {
-                datosArea = datosGlobales.filter(item => (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada);
+                datosArea = datosGlobales.filter(item => item.dirección === direccionSeleccionada);
             }
 
-            // 4. Calcular los 4 indicadores día por día
+            // 5. Calcular los 4 indicadores día por día
             const dataOp = [];
             const dataSinSalida = [];
             const dataTaller = [];
             const dataBaja = [];
 
             ultimos30DiasIso.forEach(fechaBuscada => {
-                // Obtenemos los registros de ese día en particular usando la fecha estandarizada
                 const registrosDia = datosArea.filter(item => item.fecha_iso === fechaBuscada);
                 
                 let op = 0, sinSalida = 0, taller = 0, baja = 0;
 
                 registrosDia.forEach(item => {
-                    const estado = (item.estado || "").trim().toUpperCase();
+                    const estado = item.estado.toUpperCase();
                     const noSalioHoy = item.no_salió_a_servicio_hoy;
 
                     if (estado.includes("OPERATIVO") && noSalioHoy === false) {
@@ -309,17 +463,19 @@
                 dataBaja.push(baja);
             });
 
-            // 5. Preparar las etiquetas (eje X)
+            // 6. Preparar las etiquetas (eje X)
             const labels = ultimos30DiasIso.map(formatearFechaGrafico);
 
-            // 6. Configurar/Actualizar Chart.js
-            const ctx = document.getElementById('evolucionChart').getContext('2d');
+            // 7. Configurar/Actualizar Chart.js
+            const canvasEl = document.getElementById('evolucionChart');
+            if(!canvasEl) return;
+            const ctx = canvasEl.getContext('2d');
             
             const datasets = [
                 {
                     label: 'Operativos',
                     data: dataOp,
-                    borderColor: '#4AB5E0', /* --azul-claro */
+                    borderColor: '#4AB5E0',
                     backgroundColor: 'rgba(74, 181, 224, 0.1)',
                     borderWidth: 3,
                     pointBackgroundColor: '#4AB5E0',
@@ -329,7 +485,7 @@
                 {
                     label: 'Operativos Sin Salida',
                     data: dataSinSalida,
-                    borderColor: '#2980B9', /* --azul-medio */
+                    borderColor: '#2980B9',
                     backgroundColor: 'rgba(41, 128, 185, 0.1)',
                     borderWidth: 3,
                     pointBackgroundColor: '#2980B9',
@@ -339,7 +495,7 @@
                 {
                     label: 'No Operativos / Taller',
                     data: dataTaller,
-                    borderColor: '#1F618D', /* --azul-oscuro */
+                    borderColor: '#1F618D',
                     backgroundColor: 'transparent',
                     borderWidth: 3,
                     pointBackgroundColor: '#1F618D',
@@ -349,7 +505,7 @@
                 {
                     label: 'Para Baja',
                     data: dataBaja,
-                    borderColor: '#154360', /* --azul-marino */
+                    borderColor: '#154360',
                     backgroundColor: 'transparent',
                     borderWidth: 3,
                     pointBackgroundColor: '#154360',
@@ -358,136 +514,137 @@
                 }
             ];
 
-            // Si el gráfico ya existe, actualizar sus datos
             if (graficoEvolucion) {
                 graficoEvolucion.data.labels = labels;
                 graficoEvolucion.data.datasets = datasets;
                 graficoEvolucion.update();
             } else {
-                // Si no existe, crearlo
                 Chart.defaults.color = '#FFFFFF';
                 graficoEvolucion = new Chart(ctx, {
                     type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
+                    data: { labels: labels, datasets: datasets },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'index',
-                            intersect: false,
-                        },
+                        interaction: { mode: 'index', intersect: false },
                         plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    usePointStyle: true,
-                                    padding: 20,
-                                    font: { family: 'Montserrat', size: 12 }
-                                }
-                            },
-                            tooltip: {
-                                backgroundColor: 'rgba(25, 86, 124, 0.9)', /* --azul-inst con opacidad */
-                                titleFont: { family: 'Montserrat', size: 14 },
-                                bodyFont: { family: 'Montserrat', size: 13 },
-                                padding: 12,
-                                cornerRadius: 8
-                            }
+                            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20, font: { family: 'Montserrat', size: 12 } } },
+                            tooltip: { backgroundColor: 'rgba(25, 86, 124, 0.9)', padding: 12, cornerRadius: 8 }
                         },
                         scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                },
-                                ticks: {
-                                    precision: 0,
-                                    font: { family: 'Montserrat' }
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                },
-                                ticks: {
-                                    font: { family: 'Montserrat' }
-                                }
-                            }
+                            y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                            x: { grid: { color: 'rgba(255, 255, 255, 0.1)' } }
                         }
                     }
                 });
             }
         }
 
-        // Función que lee los valores de los selects y aplica los filtros
+        // Función central que lee selects y actualiza la vista
         function aplicarFiltros() {
-            const fechaSeleccionada = document.getElementById("filtro-fecha").value;
-            const direccionSeleccionada = document.getElementById("filtro-direccion").value;
+            const selectFecha = document.getElementById("filtro-fecha");
+            const selectDir = document.getElementById("filtro-direccion");
+            
+            const fechaSeleccionada = selectFecha ? selectFecha.value : "";
+            const direccionSeleccionada = selectDir ? selectDir.value : "TODAS";
 
-            // Filtro por Fecha (Usa la nueva propiedad estandarizada fecha_iso) - SÓLO PARA KPIs y TABLAS
-            let datosParaKPIsYTablas = datosGlobales.filter(item => {
-                if (!item.fecha_iso) return false;
-                return item.fecha_iso === fechaSeleccionada;
-            });
+            // Filtro por Fecha (Aplica a KPIs y Tablas)
+            let datosFiltrados = datosGlobales.filter(item => item.fecha_iso === fechaSeleccionada);
 
-            // Filtro por Dirección (Si no es "TODAS")
+            // Filtro por Dirección
             if (direccionSeleccionada !== "TODAS") {
-                // Cargar datos en bruto
+                datosFiltrados = datosFiltrados.filter(item => item.dirección === direccionSeleccionada);
+            }
+
+            // Actualizar vista completa
+            calcularKPIs(datosFiltrados);
+            actualizarTablas(datosFiltrados);
+            actualizarGrafico(direccionSeleccionada);
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = async () => {
+            try {
+                // Hacer el fetch de data.json
+                const respuesta = await fetch('data.json');
+                if (!respuesta.ok) throw new Error("Error HTTP " + respuesta.status);
+
                 let rawData = await respuesta.json();
 
-                // SANITIZACIÓN DE DATOS SEGURA (Elimina espacios extra y estandariza la fecha)
+                // FUNCION DE EXTRACCIÓN ROBUSTA (A prueba de JSON exportados desde Excel)
+                // Busca la información incluso si las columnas tienen un espacio al final, ej: "fecha " en lugar de "fecha"
                 datosGlobales = rawData.map(item => {
-                    if (typeof item.dirección === 'string') {
-                        item.dirección = item.dirección.trim();
-                    } else {
-                        item.dirección = "SIN ESPECIFICAR";
-                    }
-                    if (typeof item.estado === 'string') {
-                        item.estado = item.estado.trim();
-                    }
-                    // Parsear y estandarizar la fecha a formato universal (YYYY-MM-DD)
-                    item.fecha_iso = parsearFecha(item.fecha);
-                    return item;
+                    const obtenerValor = (opciones) => {
+                        for(let opc of opciones) {
+                            if(item[opc] !== undefined && item[opc] !== null) return item[opc];
+                        }
+                        return null;
+                    };
+
+                    const dir = obtenerValor(["dirección", "direccion", "dirección ", "Dirección"]) || "SIN ESPECIFICAR";
+                    const est = obtenerValor(["estado", "estado ", "Estado"]) || "SIN ESTADO";
+                    const noSalio = obtenerValor(["no_salió_a_servicio_hoy", "no_salió_a_servicio_hoy ", "no_salio_a_servicio_hoy"]);
+                    const fec = obtenerValor(["fecha", "fecha ", "Fecha"]);
+                    const dom = obtenerValor(["dominio", "dominio ", "Dominio"]) || "S/D";
+                    const tip = obtenerValor(["tipo", "tipo ", "Tipo"]) || "Vehículo";
+                    const raz = obtenerValor(["razón", "razon", "razón ", "Razón"]) || "-";
+
+                    // Interpretación robusta del valor booleano
+                    const isNoSalio = (noSalio === true || String(noSalio).trim().toLowerCase() === "true");
+
+                    return {
+                        dirección: String(dir).trim(),
+                        estado: String(est).trim(),
+                        no_salió_a_servicio_hoy: isNoSalio,
+                        fecha_iso: parsearFecha(fec),
+                        dominio: String(dom).trim(),
+                        tipo: String(tip).trim(),
+                        razón: String(raz).trim()
+                    };
                 });
 
-                // 1. Obtener fechas únicas con validación anti-colapso usando el formato ISO
+                // Obtener fechas únicas que hayan sido parseadas correctamente (YYYY-MM-DD)
                 const fechasValidas = datosGlobales
                     .map(item => item.fecha_iso)
-                    .filter(f => f && !isNaN(new Date(f + 'T12:00:00').getTime())); // Solo fechas matemáticamente válidas
+                    .filter(f => f && /^\d{4}-\d{2}-\d{2}$/.test(f)); // Filtro estricto anti-NaN
 
                 const fechasUnicas = [...new Set(fechasValidas)].sort((a, b) => new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00'));
-                
-                // Guardamos variable global para usar en el gráfico de forma muy segura
                 window.fechasUnicasGlobales = fechasUnicas;
 
-                // Poblar select de Fechas
                 const selectFecha = document.getElementById("filtro-fecha");
-                fechasUnicas.forEach(fecha => {
+                selectFecha.innerHTML = ""; // Limpiar antes de llenar
+
+                if (fechasUnicas.length === 0) {
                     const option = document.createElement("option");
-                    option.value = fecha;
-                    option.textContent = formatearFechaVista(fecha);
+                    option.value = "";
+                    option.textContent = "No hay fechas detectadas";
                     selectFecha.appendChild(option);
-                });
-                
-                // Seleccionar "el día de hoy" por defecto si existe en los datos, sino usar la más reciente
-                const hoy = new Date();
-                const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
-                
-                if (fechasUnicas.includes(hoyIso)) {
-                    selectFecha.value = hoyIso;
-                } else if (fechasUnicas.length > 0) {
-                    selectFecha.value = fechasUnicas[0]; // Fallback a la más reciente disponible
+                    console.warn("No se detectaron fechas válidas en el JSON. Verifica el formato de tu columna 'fecha'.");
+                } else {
+                    // Poblar select de Fechas
+                    fechasUnicas.forEach(fecha => {
+                        const option = document.createElement("option");
+                        option.value = fecha;
+                        option.textContent = formatearFechaVista(fecha);
+                        selectFecha.appendChild(option);
+                    });
+                    
+                    // Seleccionar "el día de hoy" por defecto, o la más reciente
+                    const hoy = new Date();
+                    const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+                    
+                    if (fechasUnicas.includes(hoyIso)) {
+                        selectFecha.value = hoyIso;
+                    } else {
+                        selectFecha.value = fechasUnicas[0];
+                    }
                 }
 
-                // 2. Obtener Direcciones únicas, ordenadas alfabéticamente (ahora unificadas gracias a la sanitización)
-                const direccionesUnicas = [...new Set(datosGlobales.map(item => 
-                    item.dirección || "SIN ESPECIFICAR"
-                ))].sort();
-
-                // Poblar select de Direcciones
+                // Poblar select de Direcciones unificadas
+                const direccionesUnicas = [...new Set(datosGlobales.map(item => item.dirección))].sort();
                 const selectDireccion = document.getElementById("filtro-direccion");
+                selectDireccion.innerHTML = '<option value="TODAS">TODAS LAS ÁREAS</option>';
+                
                 direccionesUnicas.forEach(dir => {
                     const option = document.createElement("option");
                     option.value = dir;
@@ -495,11 +652,11 @@
                     selectDireccion.appendChild(option);
                 });
 
-                // 3. Asignar Event Listeners a los filtros para que se actualicen al cambiar
+                // Asignar Event Listeners a los filtros
                 selectFecha.addEventListener("change", aplicarFiltros);
                 selectDireccion.addEventListener("change", aplicarFiltros);
 
-                // 4. Aplicar filtros iniciales (Última fecha y Todas las direcciones)
+                // Aplicar filtros iniciales
                 aplicarFiltros();
 
             } catch (error) {
@@ -508,7 +665,7 @@
                 document.getElementById("kpi-sin-salida").innerText = "-";
                 document.getElementById("kpi-taller").innerText = "-";
                 document.getElementById("kpi-bajas").innerText = "-";
-                alert("No se pudo cargar el archivo data.json. Asegúrese de estar ejecutando un servidor local.");
+                alert("Hubo un problema procesando el archivo data.json. Por favor revisa la estructura de los datos.");
             }
         };
     </script>
