@@ -183,7 +183,7 @@
     <!-- Contenedor de Tablas de Detalle -->
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         
-        <!-- Tabla: Operativos Sin Salida -->
+        <!-- Tabla: Operativos Sin Salida (con Razón) -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-80 border-t-4 border-[var(--azul-medio)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider flex justify-between items-center">
                 <span>Operativos Sin Salida</span>
@@ -194,7 +194,8 @@
                         <tr>
                             <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
                             <th class="px-3 py-2">Área</th>
-                            <th class="px-3 py-2 rounded-tr-md">Estado</th>
+                            <th class="px-3 py-2">Estado</th>
+                            <th class="px-3 py-2 rounded-tr-md">Razón</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-sin-salida">
@@ -349,10 +350,11 @@
                 const dominio = item.dominio || "S/D";
                 const direccion = item.dirección || "SIN ESPECIFICAR";
                 const tipo = item.tipo || "Vehículo";
-                const razon = item.razón || "Sin detalles";
+                // Limpieza visual si no hay razón válida
+                const razon = (item.razón && item.razón.trim() !== "") ? item.razón : "-";
 
-                // Plantilla de la fila de la tabla
-                const filaHTML = `
+                // Plantilla por defecto (3 columnas: Vehículo, Área, Estado)
+                const filaHTMLDefault = `
                     <tr class="border-b border-white/10 hover:bg-white/10 transition-colors">
                         <td class="px-3 py-3">
                             <div class="font-mono font-bold text-white">${dominio}</div>
@@ -361,29 +363,49 @@
                         <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[120px]" title="${direccion}">
                             ${direccion}
                         </td>
-                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[120px]" title="${estado} - ${razon}">
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[120px]" title="${estado}">
                             <div class="font-semibold">${item.estado || 'S/D'}</div>
+                        </td>
+                    </tr>
+                `;
+
+                // Plantilla para Operativos Sin Salida (4 columnas: incluye Razón)
+                const filaHTMLSinSalida = `
+                    <tr class="border-b border-white/10 hover:bg-white/10 transition-colors">
+                        <td class="px-3 py-3">
+                            <div class="font-mono font-bold text-white">${dominio}</div>
+                            <div class="text-[10px] text-gray-300 uppercase">${tipo}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${direccion}">
+                            ${direccion}
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[90px]" title="${estado}">
+                            <div class="font-semibold">${item.estado || 'S/D'}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[110px] italic text-gray-300" title="${razon}">
+                            ${razon}
                         </td>
                     </tr>
                 `;
 
                 // Clasificamos exactamente igual que los KPIs
                 if (estado.includes("OPERATIVO") && noSalioHoy === true) {
-                    htmlSinSalida += filaHTML;
+                    htmlSinSalida += filaHTMLSinSalida;
                 } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
-                    htmlBajas += filaHTML;
+                    htmlBajas += filaHTMLDefault;
                 } else if (!(estado.includes("OPERATIVO") && noSalioHoy === false)) {
                     // Si no es operativo con salida, y no es baja, ni es sin salida... va a Taller
-                    htmlTaller += filaHTML;
+                    htmlTaller += filaHTMLDefault;
                 }
             });
 
-            // Mensajes vacíos si no hay registros
-            const filaVacia = `<tr><td colspan="3" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
+            // Mensajes vacíos si no hay registros adaptados al número de columnas
+            const filaVaciaDefault = `<tr><td colspan="3" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
+            const filaVaciaSinSalida = `<tr><td colspan="4" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
 
-            tbSinSalida.innerHTML = htmlSinSalida || filaVacia;
-            tbTaller.innerHTML = htmlTaller || filaVacia;
-            tbBajas.innerHTML = htmlBajas || filaVacia;
+            tbSinSalida.innerHTML = htmlSinSalida || filaVaciaSinSalida;
+            tbTaller.innerHTML = htmlTaller || filaVaciaDefault;
+            tbBajas.innerHTML = htmlBajas || filaVaciaDefault;
         }
 
         // Genera y actualiza el Gráfico de los últimos 30 días
@@ -609,7 +631,16 @@
                     `;
                 }
 
-                datosGlobales = await respuesta.json();
+                // Cargar datos en bruto
+                let rawData = await respuesta.json();
+
+                // SANITIZACIÓN DE DATOS (Eliminar espacios extra al principio o final en Áreas/Direcciones para unificar)
+                datosGlobales = rawData.map(item => {
+                    if (typeof item.dirección === 'string') {
+                        item.dirección = item.dirección.trim();
+                    }
+                    return item;
+                });
 
                 // 1. Obtener fechas únicas, ordenadas de más reciente a más antigua
                 const fechasUnicas = [...new Set(datosGlobales.map(item => {
@@ -627,7 +658,7 @@
                 
                 // La fecha más reciente queda seleccionada por defecto al ser la primera (index 0)
 
-                // 2. Obtener Direcciones únicas, ordenadas alfabéticamente
+                // 2. Obtener Direcciones únicas, ordenadas alfabéticamente (ahora unificadas gracias a la sanitización)
                 const direccionesUnicas = [...new Set(datosGlobales.map(item => 
                     item.dirección || "SIN ESPECIFICAR"
                 ))].sort();
