@@ -8,6 +8,9 @@
     <!-- Tailwind CSS para el diseño rápido y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Chart.js para el gráfico de líneas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Fuentes de Google (Montserrat) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +22,7 @@
             --azul-inst: #19567C;
             --blanco: #FFFFFF;
             
-            /* Gama de Azules para las Tarjetas */
+            /* Gama de Azules para las Tarjetas y Gráficos */
             --azul-claro: #4AB5E0;    /* Operativos (Celeste Brillante) */
             --azul-medio: #2980B9;    /* Sin Salida (Azul Medio) */
             --azul-oscuro: #1F618D;   /* Taller (Azul Oscuro) */
@@ -63,6 +66,12 @@
             -moz-appearance: none;
             appearance: none;
         }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -98,7 +107,7 @@
     </div>
 
     <!-- Contenedor Principal de KPIs -->
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto mb-8">
         <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
             Resumen de Estado de Flota
         </h2>
@@ -137,15 +146,35 @@
         </div>
     </div>
 
+    <!-- Contenedor del Gráfico de Líneas -->
+    <div class="max-w-7xl mx-auto glass-panel p-6 rounded-xl shadow-lg">
+        <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
+            Evolución de Estado (Últimos 30 días)
+        </h2>
+        <div class="chart-container">
+            <canvas id="evolucionChart"></canvas>
+        </div>
+    </div>
+
     <!-- Script de Inyección y Procesamiento de Datos -->
     <script>
         let datosGlobales = []; // Almacena todos los datos del JSON
+        let graficoEvolucion = null; // Instancia de Chart.js
 
         // Formatea fecha YYYY-MM-DD a DD/MM/YYYY para mostrar en el select
         function formatearFechaVista(fechaIso) {
             const partes = fechaIso.split('-');
             if (partes.length === 3) {
                 return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            return fechaIso;
+        }
+
+        // Formatea fecha YYYY-MM-DD a DD/MM para el gráfico
+        function formatearFechaGrafico(fechaIso) {
+            const partes = fechaIso.split('-');
+            if (partes.length >= 3) {
+                return `${partes[2]}/${partes[1]}`;
             }
             return fechaIso;
         }
@@ -211,26 +240,195 @@
             animarContador("kpi-bajas", kpis.baja);
         }
 
+        // Genera y actualiza el Gráfico de los últimos 30 días
+        function actualizarGrafico(direccionSeleccionada) {
+            // 1. Obtener la fecha más reciente disponible en los datos
+            const fechas = datosGlobales.map(d => d.fecha ? new Date(d.fecha.split('T')[0]) : null).filter(f => f);
+            if (fechas.length === 0) return;
+            const fechaMaxima = new Date(Math.max.apply(null, fechas));
+
+            // 2. Generar un arreglo con las fechas de los últimos 30 días (hasta la fecha máxima)
+            const ultimos30DiasIso = [];
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(fechaMaxima);
+                d.setDate(d.getDate() - i);
+                ultimos30DiasIso.push(d.toISOString().split('T')[0]);
+            }
+
+            // 3. Filtrar los datos base SOLO por la dirección seleccionada (ignoramos el filtro de fecha actual para el gráfico)
+            let datosArea = datosGlobales;
+            if (direccionSeleccionada !== "TODAS") {
+                datosArea = datosGlobales.filter(item => (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada);
+            }
+
+            // 4. Calcular los 4 indicadores día por día
+            const dataOp = [];
+            const dataSinSalida = [];
+            const dataTaller = [];
+            const dataBaja = [];
+
+            ultimos30DiasIso.forEach(fechaBuscada => {
+                // Obtenemos los registros de ese día en particular
+                const registrosDia = datosArea.filter(item => item.fecha && item.fecha.startsWith(fechaBuscada));
+                
+                let op = 0, sinSalida = 0, taller = 0, baja = 0;
+
+                registrosDia.forEach(item => {
+                    const estado = (item.estado || "").trim().toUpperCase();
+                    const noSalioHoy = item.no_salió_a_servicio_hoy;
+
+                    if (estado.includes("OPERATIVO") && noSalioHoy === false) {
+                        op++;
+                    } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                        sinSalida++;
+                    } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                        baja++;
+                    } else {
+                        taller++;
+                    }
+                });
+
+                dataOp.push(op);
+                dataSinSalida.push(sinSalida);
+                dataTaller.push(taller);
+                dataBaja.push(baja);
+            });
+
+            // 5. Preparar las etiquetas (eje X)
+            const labels = ultimos30DiasIso.map(formatearFechaGrafico);
+
+            // 6. Configurar/Actualizar Chart.js
+            const ctx = document.getElementById('evolucionChart').getContext('2d');
+            
+            const datasets = [
+                {
+                    label: 'Operativos',
+                    data: dataOp,
+                    borderColor: '#4AB5E0', /* --azul-claro */
+                    backgroundColor: 'rgba(74, 181, 224, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#4AB5E0',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Operativos Sin Salida',
+                    data: dataSinSalida,
+                    borderColor: '#2980B9', /* --azul-medio */
+                    backgroundColor: 'rgba(41, 128, 185, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#2980B9',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'No Operativos / Taller',
+                    data: dataTaller,
+                    borderColor: '#1F618D', /* --azul-oscuro */
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#1F618D',
+                    borderDash: [5, 5],
+                    tension: 0.3
+                },
+                {
+                    label: 'Para Baja',
+                    data: dataBaja,
+                    borderColor: '#154360', /* --azul-marino */
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#154360',
+                    borderDash: [2, 2],
+                    tension: 0.3
+                }
+            ];
+
+            // Si el gráfico ya existe, actualizar sus datos
+            if (graficoEvolucion) {
+                graficoEvolucion.data.labels = labels;
+                graficoEvolucion.data.datasets = datasets;
+                graficoEvolucion.update();
+            } else {
+                // Si no existe, crearlo
+                Chart.defaults.color = '#FFFFFF';
+                graficoEvolucion = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: { family: 'Montserrat', size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(25, 86, 124, 0.9)', /* --azul-inst con opacidad */
+                                titleFont: { family: 'Montserrat', size: 14 },
+                                bodyFont: { family: 'Montserrat', size: 13 },
+                                padding: 12,
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    font: { family: 'Montserrat' }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    font: { family: 'Montserrat' }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
         // Función que lee los valores de los selects y aplica los filtros
         function aplicarFiltros() {
             const fechaSeleccionada = document.getElementById("filtro-fecha").value;
             const direccionSeleccionada = document.getElementById("filtro-direccion").value;
 
-            // Filtro por Fecha (Extrae la porción YYYY-MM-DD del item.fecha)
-            let datosFiltrados = datosGlobales.filter(item => {
+            // Filtro por Fecha (Extrae la porción YYYY-MM-DD del item.fecha) - SÓLO PARA KPIs
+            let datosParaKPIs = datosGlobales.filter(item => {
                 if (!item.fecha) return false;
                 return item.fecha.startsWith(fechaSeleccionada);
             });
 
             // Filtro por Dirección (Si no es "TODAS")
             if (direccionSeleccionada !== "TODAS") {
-                datosFiltrados = datosFiltrados.filter(item => 
+                datosParaKPIs = datosParaKPIs.filter(item => 
                     (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada
                 );
             }
 
-            // Recalcular KPIs con el nuevo subconjunto de datos
-            calcularKPIs(datosFiltrados);
+            // 1. Recalcular KPIs (Se aplican ambos filtros: Fecha y Dirección)
+            calcularKPIs(datosParaKPIs);
+
+            // 2. Actualizar Gráfico (Se aplica SÓLO el filtro de Dirección, los últimos 30 días se autocalculan)
+            actualizarGrafico(direccionSeleccionada);
         }
 
         // Ejecutar al cargar la página
