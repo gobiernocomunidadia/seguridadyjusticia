@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flota Vehicular - Secretaria de Seguridad y Justicia</title>
+    
+    <!-- Tailwind CSS para el diseño rápido y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js para el gráfico de líneas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Fuentes de Google (Montserrat) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colores Institucionales */
+            --azul-inst: #19567C;
+            --blanco: #FFFFFF;
+            
+            /* Gama de Azules para las Tarjetas y Gráficos */
+            --azul-claro: #4AB5E0;    /* Operativos (Celeste Brillante) */
+            --azul-medio: #2980B9;    /* Sin Salida (Azul Medio) */
+            --azul-oscuro: #1F618D;   /* Taller (Azul Oscuro) */
+            --azul-marino: #154360;   /* Bajas (Azul Marino Profundo) */
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--azul-inst);
+            color: var(--blanco);
+            min-height: 100vh;
+        }
+
+        .glass-panel { 
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .kpi-card {
+            background: var(--blanco);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Estilo personalizado para los selects */
+        select {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2319567C' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+        /* Estilo para las barras de desplazamiento en las tablas */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Encabezado del Dashboard -->
+    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8 relative">
+        <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Control Flota Vehicular</h1>
+        <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Secretaría de Seguridad y Justicia</p>
+        
+        <!-- Etiqueta de Última Actualización -->
+        <div class="mt-4 bg-white/20 px-4 py-2 rounded-full backdrop-blur-md border border-white/30 flex items-center justify-center">
+            <p class="text-xs md:text-sm font-semibold flex items-center text-white" id="ultima-actualizacion">
+                <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Obteniendo última actualización...
+            </p>
+        </div>
+    </div>
+
+    <!-- Contenedor de Filtros -->
+    <div class="max-w-7xl mx-auto mb-8 glass-panel p-4 rounded-xl flex flex-col md:flex-row gap-6 items-center justify-between">
+        
+        <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
+            <label for="filtro-fecha" class="text-white font-bold uppercase tracking-wider text-sm whitespace-nowrap">
+                Filtrar por Fecha:
+            </label>
+            <select id="filtro-fecha" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
+                <!-- Opciones inyectadas vía JS -->
+            </select>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
+            <label for="filtro-direccion" class="text-white font-bold uppercase tracking-wider text-sm whitespace-nowrap">
+                Área / Dirección:
+            </label>
+            <select id="filtro-direccion" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
+                <option value="TODAS">TODAS LAS ÁREAS</option>
+                <!-- Opciones inyectadas vía JS -->
+            </select>
+        </div>
+
+    </div>
+
+    <!-- Contenedor Principal de KPIs -->
+    <div class="max-w-7xl mx-auto mb-8">
+        <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
+            Resumen de Estado de Flota
+        </h2>
+
+        <!-- Grid de Tarjetas (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- KPI 1: Operativos (Celeste) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-claro)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos Operativos</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-claro)] mt-3 drop-shadow-sm" id="kpi-operativos">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">En servicio y circulando</p>
+            </div>
+
+            <!-- KPI 2: Operativos Sin Salida (Azul Medio) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-medio)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Operativos Sin Salida</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-medio)] mt-3 drop-shadow-sm" id="kpi-sin-salida">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">No salieron a servicio hoy</p>
+            </div>
+
+            <!-- KPI 3: No Operativos / Taller (Azul Oscuro) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-oscuro)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">No Operativos / Taller</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-oscuro)] mt-3 drop-shadow-sm" id="kpi-taller">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">Con novedades mecánicas</p>
+            </div>
+
+            <!-- KPI 4: Para Baja (Azul Marino Profundo) -->
+            <div class="kpi-card border-b-4 border-[var(--azul-marino)]">
+                <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos para Baja</h3>
+                <p class="text-5xl font-extrabold text-[var(--azul-marino)] mt-3 drop-shadow-sm" id="kpi-bajas">0</p>
+                <p class="text-xs text-gray-400 mt-2 font-medium">Bajas y posibles bajas</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenedor del Gráfico de Líneas -->
+    <div class="max-w-7xl mx-auto glass-panel p-6 rounded-xl shadow-lg mb-8">
+        <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
+            Evolución de Estado (Últimos 30 días)
+        </h2>
+        <div class="chart-container">
+            <canvas id="evolucionChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Contenedor de Tablas de Detalle -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        
+        <!-- Tabla: Operativos Sin Salida -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-80 border-t-4 border-[var(--azul-medio)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider flex justify-between items-center">
+                <span>Operativos Sin Salida</span>
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2 rounded-tr-md">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-sin-salida">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla: No Operativos / Taller -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-80 border-t-4 border-[var(--azul-oscuro)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider flex justify-between items-center">
+                <span>No Operativos / Taller</span>
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2 rounded-tr-md">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-taller">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla: Vehículos Para Baja -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-80 border-t-4 border-[var(--azul-marino)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider flex justify-between items-center">
+                <span>Vehículos para Baja</span>
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2 rounded-tr-md">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-bajas">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script de Inyección y Procesamiento de Datos -->
+    <script>
+        let datosGlobales = []; // Almacena todos los datos del JSON
+        let graficoEvolucion = null; // Instancia de Chart.js
+
+        // Formatea fecha YYYY-MM-DD a DD/MM/YYYY para mostrar en el select
+        function formatearFechaVista(fechaIso) {
+            const partes = fechaIso.split('-');
+            if (partes.length === 3) {
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            return fechaIso;
+        }
+
+        // Formatea fecha YYYY-MM-DD a DD/MM para el gráfico
+        function formatearFechaGrafico(fechaIso) {
+            const partes = fechaIso.split('-');
+            if (partes.length >= 3) {
+                return `${partes[2]}/${partes[1]}`;
+            }
+            return fechaIso;
+        }
+
+        // Animación simple de contadores numéricos
+        function animarContador(id, finalValue) {
+            let startValue = 0;
+            let duration = 1000; // 1 segundo
+            let stepTime = 20; 
+            let steps = duration / stepTime;
+            let increment = finalValue / steps;
+            let element = document.getElementById(id);
+            
+            if (finalValue === 0) {
+                element.innerText = 0;
+                return;
+            }
+
+            let timer = setInterval(() => {
+                startValue += increment;
+                if (startValue >= finalValue) {
+                    clearInterval(timer);
+                    element.innerText = finalValue;
+                } else {
+                    element.innerText = Math.floor(startValue);
+                }
+            }, stepTime);
+        }
+
+        // Calcula e inyecta los KPIs basándose en el dataset filtrado
+        function calcularKPIs(datosFiltrados) {
+            let kpis = {
+                operativos: 0,
+                sinSalida: 0,
+                taller: 0,
+                baja: 0
+            };
+
+            datosFiltrados.forEach(item => {
+                const estado = (item.estado || "").trim().toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy; // Valor booleano (true/false)
+
+                // Lógica de clasificación estricta solicitada
+                if (estado.includes("OPERATIVO") && noSalioHoy === false) {
+                    // Estado Operativo Y salió a servicio
+                    kpis.operativos++;
+                } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                    // Estado Operativo Y NO salió a servicio
+                    kpis.sinSalida++;
+                } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                    // Bajas o Radiados
+                    kpis.baja++;
+                } else {
+                    // Taller u otros estados (Taller externo, municipal, verificar estado, etc.)
+                    kpis.taller++;
+                }
+            });
+
+            // Animar los resultados en la pantalla
+            animarContador("kpi-operativos", kpis.operativos);
+            animarContador("kpi-sin-salida", kpis.sinSalida);
+            animarContador("kpi-taller", kpis.taller);
+            animarContador("kpi-bajas", kpis.baja);
+        }
+
+        // Dibuja las filas de las tablas de detalle
+        function actualizarTablas(datosFiltrados) {
+            const tbSinSalida = document.getElementById('tabla-sin-salida');
+            const tbTaller = document.getElementById('tabla-taller');
+            const tbBajas = document.getElementById('tabla-bajas');
+
+            let htmlSinSalida = '';
+            let htmlTaller = '';
+            let htmlBajas = '';
+
+            datosFiltrados.forEach(item => {
+                const estado = (item.estado || "").trim().toUpperCase();
+                const noSalioHoy = item.no_salió_a_servicio_hoy;
+                
+                const dominio = item.dominio || "S/D";
+                const direccion = item.dirección || "SIN ESPECIFICAR";
+                const tipo = item.tipo || "Vehículo";
+                const razon = item.razón || "Sin detalles";
+
+                // Plantilla de la fila de la tabla
+                const filaHTML = `
+                    <tr class="border-b border-white/10 hover:bg-white/10 transition-colors">
+                        <td class="px-3 py-3">
+                            <div class="font-mono font-bold text-white">${dominio}</div>
+                            <div class="text-[10px] text-gray-300 uppercase">${tipo}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[120px]" title="${direccion}">
+                            ${direccion}
+                        </td>
+                        <td class="px-3 py-3 text-xs opacity-90 truncate max-w-[120px]" title="${estado} - ${razon}">
+                            <div class="font-semibold">${item.estado || 'S/D'}</div>
+                        </td>
+                    </tr>
+                `;
+
+                // Clasificamos exactamente igual que los KPIs
+                if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                    htmlSinSalida += filaHTML;
+                } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                    htmlBajas += filaHTML;
+                } else if (!(estado.includes("OPERATIVO") && noSalioHoy === false)) {
+                    // Si no es operativo con salida, y no es baja, ni es sin salida... va a Taller
+                    htmlTaller += filaHTML;
+                }
+            });
+
+            // Mensajes vacíos si no hay registros
+            const filaVacia = `<tr><td colspan="3" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
+
+            tbSinSalida.innerHTML = htmlSinSalida || filaVacia;
+            tbTaller.innerHTML = htmlTaller || filaVacia;
+            tbBajas.innerHTML = htmlBajas || filaVacia;
+        }
+
+        // Genera y actualiza el Gráfico de los últimos 30 días
+        function actualizarGrafico(direccionSeleccionada) {
+            // 1. Obtener la fecha más reciente disponible en los datos
+            const fechas = datosGlobales.map(d => d.fecha ? new Date(d.fecha.split('T')[0]) : null).filter(f => f);
+            if (fechas.length === 0) return;
+            const fechaMaxima = new Date(Math.max.apply(null, fechas));
+
+            // 2. Generar un arreglo con las fechas de los últimos 30 días (hasta la fecha máxima)
+            const ultimos30DiasIso = [];
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(fechaMaxima);
+                d.setDate(d.getDate() - i);
+                ultimos30DiasIso.push(d.toISOString().split('T')[0]);
+            }
+
+            // 3. Filtrar los datos base SOLO por la dirección seleccionada (ignoramos el filtro de fecha actual para el gráfico)
+            let datosArea = datosGlobales;
+            if (direccionSeleccionada !== "TODAS") {
+                datosArea = datosGlobales.filter(item => (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada);
+            }
+
+            // 4. Calcular los 4 indicadores día por día
+            const dataOp = [];
+            const dataSinSalida = [];
+            const dataTaller = [];
+            const dataBaja = [];
+
+            ultimos30DiasIso.forEach(fechaBuscada => {
+                // Obtenemos los registros de ese día en particular
+                const registrosDia = datosArea.filter(item => item.fecha && item.fecha.startsWith(fechaBuscada));
+                
+                let op = 0, sinSalida = 0, taller = 0, baja = 0;
+
+                registrosDia.forEach(item => {
+                    const estado = (item.estado || "").trim().toUpperCase();
+                    const noSalioHoy = item.no_salió_a_servicio_hoy;
+
+                    if (estado.includes("OPERATIVO") && noSalioHoy === false) {
+                        op++;
+                    } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                        sinSalida++;
+                    } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
+                        baja++;
+                    } else {
+                        taller++;
+                    }
+                });
+
+                dataOp.push(op);
+                dataSinSalida.push(sinSalida);
+                dataTaller.push(taller);
+                dataBaja.push(baja);
+            });
+
+            // 5. Preparar las etiquetas (eje X)
+            const labels = ultimos30DiasIso.map(formatearFechaGrafico);
+
+            // 6. Configurar/Actualizar Chart.js
+            const ctx = document.getElementById('evolucionChart').getContext('2d');
+            
+            const datasets = [
+                {
+                    label: 'Operativos',
+                    data: dataOp,
+                    borderColor: '#4AB5E0', /* --azul-claro */
+                    backgroundColor: 'rgba(74, 181, 224, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#4AB5E0',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Operativos Sin Salida',
+                    data: dataSinSalida,
+                    borderColor: '#2980B9', /* --azul-medio */
+                    backgroundColor: 'rgba(41, 128, 185, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#2980B9',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'No Operativos / Taller',
+                    data: dataTaller,
+                    borderColor: '#1F618D', /* --azul-oscuro */
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#1F618D',
+                    borderDash: [5, 5],
+                    tension: 0.3
+                },
+                {
+                    label: 'Para Baja',
+                    data: dataBaja,
+                    borderColor: '#154360', /* --azul-marino */
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#154360',
+                    borderDash: [2, 2],
+                    tension: 0.3
+                }
+            ];
+
+            // Si el gráfico ya existe, actualizar sus datos
+            if (graficoEvolucion) {
+                graficoEvolucion.data.labels = labels;
+                graficoEvolucion.data.datasets = datasets;
+                graficoEvolucion.update();
+            } else {
+                // Si no existe, crearlo
+                Chart.defaults.color = '#FFFFFF';
+                graficoEvolucion = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: { family: 'Montserrat', size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(25, 86, 124, 0.9)', /* --azul-inst con opacidad */
+                                titleFont: { family: 'Montserrat', size: 14 },
+                                bodyFont: { family: 'Montserrat', size: 13 },
+                                padding: 12,
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    precision: 0,
+                                    font: { family: 'Montserrat' }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    font: { family: 'Montserrat' }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Función que lee los valores de los selects y aplica los filtros
+        function aplicarFiltros() {
+            const fechaSeleccionada = document.getElementById("filtro-fecha").value;
+            const direccionSeleccionada = document.getElementById("filtro-direccion").value;
+
+            // Filtro por Fecha (Extrae la porción YYYY-MM-DD del item.fecha) - SÓLO PARA KPIs y TABLAS
+            let datosParaKPIsYTablas = datosGlobales.filter(item => {
+                if (!item.fecha) return false;
+                return item.fecha.startsWith(fechaSeleccionada);
+            });
+
+            // Filtro por Dirección (Si no es "TODAS")
+            if (direccionSeleccionada !== "TODAS") {
+                datosParaKPIsYTablas = datosParaKPIsYTablas.filter(item => 
+                    (item.dirección || "SIN ESPECIFICAR") === direccionSeleccionada
+                );
+            }
+
+            // 1. Recalcular KPIs (Se aplican ambos filtros: Fecha y Dirección)
+            calcularKPIs(datosParaKPIsYTablas);
+
+            // 2. Actualizar Tablas de Detalle (Se aplican ambos filtros)
+            actualizarTablas(datosParaKPIsYTablas);
+
+            // 3. Actualizar Gráfico (Se aplica SÓLO el filtro de Dirección, los últimos 30 días se autocalculan)
+            actualizarGrafico(direccionSeleccionada);
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = async () => {
+            try {
+                // Hacer el fetch de data.json
+                const respuesta = await fetch('data.json');
+                if (!respuesta.ok) throw new Error("Error HTTP " + respuesta.status);
+
+                // EXTRAER Y MOSTRAR LA FECHA DE ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO
+                const lastModifiedHeader = respuesta.headers.get('Last-Modified');
+                const updateElement = document.getElementById('ultima-actualizacion');
+                
+                if (updateElement) {
+                    let textoActualizacion;
+                    if (lastModifiedHeader) {
+                        // Usar la fecha exacta entregada por el servidor/github
+                        const fechaMod = new Date(lastModifiedHeader);
+                        textoActualizacion = fechaMod.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }) + ' hs';
+                    } else {
+                        // Fallback: Si GitHub no envía el header, mostramos el momento en que se leyó la data exitosamente
+                        const ahora = new Date();
+                        textoActualizacion = ahora.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }) + ' hs (Actual)';
+                    }
+                    
+                    updateElement.innerHTML = `
+                        <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Datos actualizados al: ${textoActualizacion}
+                    `;
+                }
+
+                datosGlobales = await respuesta.json();
+
+                // 1. Obtener fechas únicas, ordenadas de más reciente a más antigua
+                const fechasUnicas = [...new Set(datosGlobales.map(item => {
+                    return item.fecha ? item.fecha.split('T')[0] : null;
+                }).filter(f => f))].sort((a, b) => new Date(b) - new Date(a));
+
+                // Poblar select de Fechas
+                const selectFecha = document.getElementById("filtro-fecha");
+                fechasUnicas.forEach(fecha => {
+                    const option = document.createElement("option");
+                    option.value = fecha;
+                    option.textContent = formatearFechaVista(fecha);
+                    selectFecha.appendChild(option);
+                });
+                
+                // La fecha más reciente queda seleccionada por defecto al ser la primera (index 0)
+
+                // 2. Obtener Direcciones únicas, ordenadas alfabéticamente
+                const direccionesUnicas = [...new Set(datosGlobales.map(item => 
+                    item.dirección || "SIN ESPECIFICAR"
+                ))].sort();
+
+                // Poblar select de Direcciones
+                const selectDireccion = document.getElementById("filtro-direccion");
+                direccionesUnicas.forEach(dir => {
+                    const option = document.createElement("option");
+                    option.value = dir;
+                    option.textContent = dir;
+                    selectDireccion.appendChild(option);
+                });
+
+                // 3. Asignar Event Listeners a los filtros para que se actualicen al cambiar
+                selectFecha.addEventListener("change", aplicarFiltros);
+                selectDireccion.addEventListener("change", aplicarFiltros);
+
+                // 4. Aplicar filtros iniciales (Última fecha y Todas las direcciones)
+                aplicarFiltros();
+
+            } catch (error) {
+                console.error("Error inicializando el dashboard:", error);
+                document.getElementById("kpi-operativos").innerText = "-";
+                document.getElementById("kpi-sin-salida").innerText = "-";
+                document.getElementById("kpi-taller").innerText = "-";
+                document.getElementById("kpi-bajas").innerText = "-";
+                
+                const updateElement = document.getElementById('ultima-actualizacion');
+                if(updateElement) {
+                    updateElement.innerHTML = `Error obteniendo actualización`;
+                    updateElement.classList.add("text-red-300");
+                }
+
+                alert("No se pudo cargar el archivo data.json. Asegúrese de estar ejecutando un servidor local.");
+            }
+        };
+    </script>
+</body>
+</html>
