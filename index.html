@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -350,8 +350,8 @@
                 const dominio = item.dominio || "S/D";
                 const direccion = item.dirección || "SIN ESPECIFICAR";
                 const tipo = item.tipo || "Vehículo";
-                // Limpieza visual si no hay razón válida
-                const razon = (item.razón && item.razón.trim() !== "") ? item.razón : "-";
+                // Limpieza visual segura y validación de tipo para evitar errores de ejecución
+                const razon = (typeof item.razón === 'string' && item.razón.trim() !== "") ? item.razón.trim() : "-";
 
                 // Plantilla por defecto (3 columnas: Vehículo, Área, Estado)
                 const filaHTMLDefault = `
@@ -410,10 +410,12 @@
 
         // Genera y actualiza el Gráfico de los últimos 30 días
         function actualizarGrafico(direccionSeleccionada) {
-            // 1. Obtener la fecha más reciente disponible en los datos
-            const fechas = datosGlobales.map(d => d.fecha ? new Date(d.fecha.split('T')[0]) : null).filter(f => f);
-            if (fechas.length === 0) return;
-            const fechaMaxima = new Date(Math.max.apply(null, fechas));
+            // 1. Obtener la fecha más reciente disponible de forma segura
+            if (!window.fechasUnicasGlobales || window.fechasUnicasGlobales.length === 0) return;
+            
+            // Usamos la fecha más reciente que ya validamos matemáticamente en la carga inicial
+            const fechaMaximaStr = window.fechasUnicasGlobales[0];
+            const fechaMaxima = new Date(fechaMaximaStr + 'T12:00:00'); // T12 previene desajustes por zona horaria
 
             // 2. Generar un arreglo con las fechas de los últimos 30 días (hasta la fecha máxima)
             const ultimos30DiasIso = [];
@@ -634,18 +636,28 @@
                 // Cargar datos en bruto
                 let rawData = await respuesta.json();
 
-                // SANITIZACIÓN DE DATOS (Eliminar espacios extra al principio o final en Áreas/Direcciones para unificar)
+                // SANITIZACIÓN DE DATOS SEGURA (Elimina espacios extra y previene bloqueos por campos nulos)
                 datosGlobales = rawData.map(item => {
                     if (typeof item.dirección === 'string') {
                         item.dirección = item.dirección.trim();
+                    } else {
+                        item.dirección = "SIN ESPECIFICAR";
+                    }
+                    if (typeof item.estado === 'string') {
+                        item.estado = item.estado.trim();
                     }
                     return item;
                 });
 
-                // 1. Obtener fechas únicas, ordenadas de más reciente a más antigua
-                const fechasUnicas = [...new Set(datosGlobales.map(item => {
-                    return item.fecha ? item.fecha.split('T')[0] : null;
-                }).filter(f => f))].sort((a, b) => new Date(b) - new Date(a));
+                // 1. Obtener fechas únicas con validación anti-colapso (descarta las fechas corruptas/vacías)
+                const fechasValidas = datosGlobales
+                    .map(item => typeof item.fecha === 'string' ? item.fecha.split('T')[0] : null)
+                    .filter(f => f && !isNaN(new Date(f + 'T12:00:00').getTime())); // Solo fechas matemáticamente válidas
+
+                const fechasUnicas = [...new Set(fechasValidas)].sort((a, b) => new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00'));
+                
+                // Guardamos variable global para usar en el gráfico de forma muy segura
+                window.fechasUnicasGlobales = fechasUnicas;
 
                 // Poblar select de Fechas
                 const selectFecha = document.getElementById("filtro-fecha");
@@ -688,11 +700,12 @@
                 
                 const updateElement = document.getElementById('ultima-actualizacion');
                 if(updateElement) {
-                    updateElement.innerHTML = `Error obteniendo actualización`;
+                    // Mostramos el error exacto en la pastilla en lugar de un mensaje genérico
+                    updateElement.innerHTML = `Error cargando: ${error.message}`;
                     updateElement.classList.add("text-red-300");
                 }
 
-                alert("No se pudo cargar el archivo data.json. Asegúrese de estar ejecutando un servidor local.");
+                alert("No se pudo cargar el tablero. Puede ser un error de conexión, archivo no encontrado en GitHub o formato JSON inválido.");
             }
         };
     </script>
