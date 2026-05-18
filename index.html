@@ -173,8 +173,30 @@
     </div>
 
     <!-- Contenedor de Tablas de Detalle -->
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         
+        <!-- Tabla: Vehículos Operativos -->
+        <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-claro)]">
+            <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
+                Vehículos Operativos
+            </h3>
+            <div class="overflow-y-auto flex-grow pr-2 custom-scrollbar">
+                <table class="w-full text-sm text-left text-white">
+                    <thead class="text-xs uppercase bg-white/10 sticky top-0 backdrop-blur-sm z-10">
+                        <tr>
+                            <th class="px-3 py-2 rounded-tl-md">Vehículo</th>
+                            <th class="px-3 py-2">Área</th>
+                            <th class="px-3 py-2">Estado</th>
+                            <th class="px-3 py-2 rounded-tr-md">Razón</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-operativos">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Tabla: Operativos Sin Salida -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-medio)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
@@ -357,12 +379,14 @@
             animarContador("kpi-bajas", kpis.baja);
         }
 
-        // Dibuja las filas de las 3 tablas con la columna Razón
+        // Dibuja las filas de las 4 tablas con la columna Razón
         function actualizarTablas(datosFiltrados) {
+            const tbOperativos = document.getElementById('tabla-operativos');
             const tbSinSalida = document.getElementById('tabla-sin-salida');
             const tbTaller = document.getElementById('tabla-taller');
             const tbBajas = document.getElementById('tabla-bajas');
 
+            let htmlOperativos = '';
             let htmlSinSalida = '';
             let htmlTaller = '';
             let htmlBajas = '';
@@ -391,11 +415,13 @@
                 `;
 
                 // Clasificamos exactamente igual que los KPIs
-                if (estado.includes("OPERATIVO") && noSalioHoy === true) {
+                if (estado.includes("OPERATIVO") && noSalioHoy === false) {
+                    htmlOperativos += filaHTML;
+                } else if (estado.includes("OPERATIVO") && noSalioHoy === true) {
                     htmlSinSalida += filaHTML;
                 } else if (estado.includes("BAJA") || estado.includes("RADIADO")) {
                     htmlBajas += filaHTML;
-                } else if (!(estado.includes("OPERATIVO") && noSalioHoy === false)) {
+                } else {
                     // Taller (Cualquiera que no sea operativo puro ni baja)
                     htmlTaller += filaHTML;
                 }
@@ -404,9 +430,10 @@
             // Mensajes vacíos si no hay registros
             const filaVacia = `<tr><td colspan="4" class="px-3 py-6 text-center text-gray-300 opacity-70 text-sm">No hay registros en esta categoría</td></tr>`;
 
-            tbSinSalida.innerHTML = htmlSinSalida || filaVacia;
-            tbTaller.innerHTML = htmlTaller || filaVacia;
-            tbBajas.innerHTML = htmlBajas || filaVacia;
+            if (tbOperativos) tbOperativos.innerHTML = htmlOperativos || filaVacia;
+            if (tbSinSalida) tbSinSalida.innerHTML = htmlSinSalida || filaVacia;
+            if (tbTaller) tbTaller.innerHTML = htmlTaller || filaVacia;
+            if (tbBajas) tbBajas.innerHTML = htmlBajas || filaVacia;
         }
 
         // Genera y actualiza el Gráfico de los últimos 30 días
