@@ -93,9 +93,17 @@
 <body class="p-4 md:p-8">
 
     <!-- Encabezado del Dashboard -->
-    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8">
+    <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8 relative">
         <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Control Flota Vehicular</h1>
         <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Secretaría de Seguridad y Justicia</p>
+        
+        <!-- Etiqueta de Última Actualización -->
+        <div class="mt-4 bg-white/20 px-4 py-2 rounded-full backdrop-blur-md border border-white/30 flex items-center justify-center">
+            <p class="text-xs md:text-sm font-semibold flex items-center text-white" id="ultima-actualizacion">
+                <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Obteniendo última actualización...
+            </p>
+        </div>
     </div>
 
     <!-- Contenedor de Filtros -->
@@ -579,6 +587,28 @@
                 const respuesta = await fetch('data.json');
                 if (!respuesta.ok) throw new Error("Error HTTP " + respuesta.status);
 
+                // EXTRAER Y MOSTRAR LA FECHA DE ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO
+                const lastModifiedHeader = respuesta.headers.get('Last-Modified');
+                const updateElement = document.getElementById('ultima-actualizacion');
+                
+                if (updateElement) {
+                    let textoActualizacion;
+                    if (lastModifiedHeader) {
+                        // Usar la fecha exacta entregada por el servidor/github
+                        const fechaMod = new Date(lastModifiedHeader);
+                        textoActualizacion = fechaMod.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }) + ' hs';
+                    } else {
+                        // Fallback: Si GitHub no envía el header, mostramos el momento en que se leyó la data exitosamente
+                        const ahora = new Date();
+                        textoActualizacion = ahora.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }) + ' hs (Actual)';
+                    }
+                    
+                    updateElement.innerHTML = `
+                        <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Datos actualizados al: ${textoActualizacion}
+                    `;
+                }
+
                 datosGlobales = await respuesta.json();
 
                 // 1. Obtener fechas únicas, ordenadas de más reciente a más antigua
@@ -624,6 +654,13 @@
                 document.getElementById("kpi-sin-salida").innerText = "-";
                 document.getElementById("kpi-taller").innerText = "-";
                 document.getElementById("kpi-bajas").innerText = "-";
+                
+                const updateElement = document.getElementById('ultima-actualizacion');
+                if(updateElement) {
+                    updateElement.innerHTML = `Error obteniendo actualización`;
+                    updateElement.classList.add("text-red-300");
+                }
+
                 alert("No se pudo cargar el archivo data.json. Asegúrese de estar ejecutando un servidor local.");
             }
         };
