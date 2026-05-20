@@ -103874,7 +103874,7 @@
     "tipo": "Moto",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": null,
+    "razón": "No programado / Sin servicio asignado",
     "fecha": "20/05/2026"
   },
   {
@@ -103890,8 +103890,8 @@
     "dirección": "CPU",
     "dominio": "A125WXD",
     "tipo": "Moto",
-    "estado": "Taller Municipal",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "20/05/2026"
   },
@@ -104790,8 +104790,8 @@
     "dirección": "CPU",
     "dominio": "AE926CM",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "20/05/2026"
   },
@@ -104826,7 +104826,7 @@
     "dirección": "CPU",
     "dominio": "AF276PU",
     "tipo": "Patrulla",
-    "estado": "Averiguar",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "20/05/2026"
@@ -105510,8 +105510,8 @@
     "dirección": "CPU",
     "dominio": "AF842AL",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "20/05/2026"
   },
@@ -105645,8 +105645,8 @@
     "dirección": "CPU",
     "dominio": "AF846XD",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "20/05/2026"
   },
@@ -105753,18 +105753,18 @@
     "dirección": "CPU",
     "dominio": "AH223SC",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
+    "razón": "Falla mecánica",
     "fecha": "20/05/2026"
   },
   {
     "dirección": "CPU",
     "dominio": "AH223SD",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
+    "razón": "Está en service",
     "fecha": "20/05/2026"
   },
   {
@@ -106086,9 +106086,9 @@
     "dirección": "CPU",
     "dominio": "AH418ST",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
+    "razón": "Falla mecánica",
     "fecha": "20/05/2026"
   },
   {
@@ -106950,7 +106950,7 @@
     "dirección": "LOMAS PREVIENE",
     "dominio": "AE452ID",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "20/05/2026"
