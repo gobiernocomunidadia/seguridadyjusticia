@@ -163209,7 +163209,7 @@
     "dirección": "CPU",
     "dominio": "A145FPF",
     "tipo": "Moto",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "26/05/2026"
@@ -165486,9 +165486,9 @@
     "dirección": "AGENCIA DE SEGURIDAD VIAL",
     "dominio": "NCR325",
     "tipo": "Camioneta",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "razón": "Falla mecánica",
     "fecha": "26/05/2026"
   },
   {
