@@ -222340,8 +222340,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
@@ -222430,8 +222430,8 @@
     "dominio": "A145FPJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
@@ -222439,8 +222439,8 @@
     "dominio": "A179FSE",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
@@ -222520,8 +222520,8 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
@@ -222529,8 +222529,8 @@
     "dominio": "A179FSY",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
@@ -223023,8 +223023,8 @@
     "dirección": "CPU",
     "dominio": "AE807UH",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "01/06/2026"
   },
@@ -223869,9 +223869,9 @@
     "dirección": "CPU",
     "dominio": "AF842AF",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
+    "razón": "Falla mecánica",
     "fecha": "01/06/2026"
   },
   {
@@ -223905,9 +223905,9 @@
     "dirección": "CPU",
     "dominio": "AF842AL",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": false,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "01/06/2026"
   },
   {
