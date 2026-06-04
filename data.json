@@ -251940,7 +251940,7 @@
     "dirección": "CPU",
     "dominio": "A145FPI",
     "tipo": "Moto",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "04/06/2026"
@@ -251985,7 +251985,7 @@
     "dirección": "CPU",
     "dominio": "A179FSH",
     "tipo": "Moto",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "04/06/2026"
@@ -252003,7 +252003,7 @@
     "dirección": "CPU",
     "dominio": "A179FSJ",
     "tipo": "Moto",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "04/06/2026"
@@ -252444,8 +252444,8 @@
     "dirección": "CPU",
     "dominio": "AE774GU",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "04/06/2026"
   },
@@ -252471,8 +252471,8 @@
     "dirección": "CPU",
     "dominio": "AE774GY",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "04/06/2026"
   },
@@ -253119,8 +253119,8 @@
     "dirección": "CPU",
     "dominio": "AF559KY",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "04/06/2026"
   },
@@ -254709,6 +254709,15 @@
     "fecha": "04/06/2026"
   },
   {
+    "dirección": "DM EMERGENCIAS",
+    "dominio": "AG721OO",
+    "tipo": "Ambulancia",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
+    "fecha": "04/06/2026"
+  },
+  {
     "dirección": "LOMAS PREVIENE",
     "dominio": "AE365YX",
     "tipo": "Patrulla",
@@ -255172,7 +255181,7 @@
     "dominio": "AE521UF",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "04/06/2026"
   },
@@ -261434,7 +261443,7 @@
   {
     "dirección": "COMISARIA DE LA MUJER",
     "dominio": "AE914AT",
-    "tipo": "Camioneta",
+    "tipo": "Patrulla",
     "estado": "VERIFICAR ESTADO",
     "no_salió_a_servicio_hoy": true,
     "razón": "Sin info",
@@ -261454,7 +261463,7 @@
     "dominio": "407KTV",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "04/06/2026"
   },
