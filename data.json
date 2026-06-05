@@ -261688,8 +261688,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "05/06/2026"
   },
   {
@@ -261770,7 +261770,7 @@
     "tipo": "Moto",
     "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
-    "razón": null,
+    "razón": "No programado / Sin servicio asignado",
     "fecha": "05/06/2026"
   },
   {
@@ -261787,8 +261787,8 @@
     "dominio": "A179FSE",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "05/06/2026"
   },
   {
@@ -261815,14 +261815,14 @@
     "tipo": "Moto",
     "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
-    "razón": null,
+    "razón": "No programado / Sin servicio asignado",
     "fecha": "05/06/2026"
   },
   {
     "dirección": "CPU",
     "dominio": "A179FSI",
     "tipo": "Moto",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "05/06/2026"
@@ -261833,7 +261833,7 @@
     "tipo": "Moto",
     "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
-    "razón": null,
+    "razón": "No programado / Sin servicio asignado",
     "fecha": "05/06/2026"
   },
   {
@@ -261868,8 +261868,8 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "05/06/2026"
   },
   {
@@ -261877,8 +261877,8 @@
     "dominio": "A179FSY",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "05/06/2026"
   },
   {
@@ -265388,6 +265388,15 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
+    "razón": null,
+    "fecha": "05/06/2026"
+  },
+  {
+    "dirección": "LOMAS PREVIENE ",
+    "dominio": "AE432DA",
+    "tipo": "Patrulla",
+    "estado": "operativo",
+    "no_salió_a_servicio_hoy": null,
     "razón": null,
     "fecha": "05/06/2026"
   },
