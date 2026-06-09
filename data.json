@@ -302259,8 +302259,8 @@
     "dirección": "CPU",
     "dominio": "AF559KZ",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "09/06/2026"
   },
@@ -302538,8 +302538,8 @@
     "dirección": "CPU",
     "dominio": "AF842AL",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "09/06/2026"
   },
@@ -302673,8 +302673,8 @@
     "dirección": "CPU",
     "dominio": "AF846XD",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "09/06/2026"
   },
@@ -302988,7 +302988,7 @@
     "dirección": "CPU",
     "dominio": "AH375EW",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "09/06/2026"
@@ -303060,8 +303060,8 @@
     "dirección": "CPU",
     "dominio": "AH418SM",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "09/06/2026"
   },
@@ -303141,18 +303141,18 @@
     "dirección": "CPU",
     "dominio": "AH418SW",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
     "dirección": "CPU",
     "dominio": "AH418SX",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303304,8 +303304,8 @@
     "dominio": "A125RYV",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303313,8 +303313,8 @@
     "dominio": "A125WXC",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303322,8 +303322,8 @@
     "dominio": "A125WXL",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303331,8 +303331,8 @@
     "dominio": "A125WXN",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303340,8 +303340,8 @@
     "dominio": "A125WXP",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303349,8 +303349,8 @@
     "dominio": "A130IOP",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303359,7 +303359,7 @@
     "tipo": "Moto",
     "estado": "Taller Municipal",
     "no_salió_a_servicio_hoy": false,
-    "razón": "En taller",
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303367,8 +303367,8 @@
     "dominio": "A130IOV",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303376,8 +303376,8 @@
     "dominio": "A130LJP",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303403,8 +303403,8 @@
     "dominio": "AE478AQ",
     "tipo": "Auto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303412,8 +303412,8 @@
     "dominio": "AE478AS",
     "tipo": "Auto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Por lluvia",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
@@ -303637,7 +303637,7 @@
     "dominio": "A179FSW",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "09/06/2026"
   },
@@ -303646,8 +303646,8 @@
     "dominio": "A179FSU",
     "tipo": "Moto",
     "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "09/06/2026"
   },
   {
