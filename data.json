@@ -311008,8 +311008,8 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "10/06/2026"
   },
   {
@@ -311017,8 +311017,8 @@
     "dominio": "A179FSY",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "10/06/2026"
   },
   {
@@ -311997,8 +311997,8 @@
     "dirección": "CPU",
     "dominio": "AF496DD",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "10/06/2026"
   },
@@ -312528,8 +312528,8 @@
     "dirección": "CPU",
     "dominio": "AF846XG",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "10/06/2026"
   },
