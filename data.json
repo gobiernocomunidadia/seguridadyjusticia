@@ -321591,7 +321591,7 @@
     "dirección": "CPU",
     "dominio": "AF301SJ",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "12/06/2026"
@@ -321852,7 +321852,7 @@
     "dirección": "CPU ",
     "dominio": "AF520QM",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "12/06/2026"
@@ -322140,7 +322140,7 @@
     "dirección": "CPU",
     "dominio": "AF842AB",
     "tipo": "Patrulla",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "12/06/2026"
@@ -322167,7 +322167,7 @@
     "dirección": "CPU",
     "dominio": "AF842AF",
     "tipo": "Patrulla",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "12/06/2026"
@@ -322221,7 +322221,7 @@
     "dirección": "CPU",
     "dominio": "AF842AO",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "12/06/2026"
@@ -322356,7 +322356,7 @@
     "dirección": "CPU",
     "dominio": "AF846XG",
     "tipo": "Patrulla",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "12/06/2026"
@@ -322545,8 +322545,8 @@
     "dirección": "CPU",
     "dominio": "AH375EK",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": "Falla mecánica",
     "fecha": "12/06/2026"
   },
@@ -322590,8 +322590,8 @@
     "dirección": "CPU",
     "dominio": "AH375EQ",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": "Falla mecánica",
     "fecha": "12/06/2026"
   },
@@ -322626,8 +322626,8 @@
     "dirección": "CPU",
     "dominio": "AH375EU",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "12/06/2026"
   },
@@ -323409,7 +323409,7 @@
     "dirección": "DM EMERGENCIAS",
     "dominio": "AA928JI",
     "tipo": "Ambulancia",
-    "estado": "Sin funcionar - parado",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
     "razón": "Falla mecánica",
     "fecha": "12/06/2026"
