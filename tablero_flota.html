@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Flota Vehicular - Secretaria de Seguridad y Justicia</title>
+    <title>Seguridad 911 - Control Flota Vehicular</title>
     
-    <!-- Tailwind CSS para el diseño rápido y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Chart.js para el gráfico de líneas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Fuentes de Google (Montserrat) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -92,13 +89,15 @@
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- Encabezado del Dashboard -->
     <div class="glass-panel p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center mb-8 relative">
-        <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Control Flota Vehicular</h1>
-        <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Secretaría de Seguridad y Justicia</p>
+        <h1 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-white drop-shadow-md">Seguridad 911</h1>
+        <p class="text-base md:text-lg text-white opacity-90 mt-2 font-semibold">Control Flota Vehicular</p>
+        <div class="mt-3 inline-flex items-center bg-white/10 px-3 py-1 rounded-full border border-white/20">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse mr-2"></span>
+            <span id="fecha-actualizacion" class="text-xs font-mono text-white/90">Actualizando...</span>
+        </div>
     </div>
 
-    <!-- Contenedor de Filtros -->
     <div class="max-w-7xl mx-auto mb-8 glass-panel p-4 rounded-xl flex flex-col md:flex-row gap-6 items-center justify-between">
         
         <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
@@ -106,8 +105,7 @@
                 Filtrar por Fecha:
             </label>
             <select id="filtro-fecha" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
-                <!-- Opciones inyectadas vía JS -->
-            </select>
+                </select>
         </div>
 
         <div class="flex flex-col md:flex-row items-center w-full md:w-1/2 gap-3">
@@ -116,43 +114,36 @@
             </label>
             <select id="filtro-direccion" class="w-full p-2.5 rounded-lg bg-white text-[var(--azul-inst)] font-bold outline-none cursor-pointer shadow-inner border-2 border-transparent focus:border-[var(--azul-claro)] transition-colors">
                 <option value="TODAS">TODAS LAS ÁREAS</option>
-                <!-- Opciones inyectadas vía JS -->
-            </select>
+                </select>
         </div>
 
     </div>
 
-    <!-- Contenedor Principal de KPIs -->
     <div class="max-w-7xl mx-auto mb-8">
         <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
             Resumen de Estado de Flota
         </h2>
 
-        <!-- Grid de Tarjetas (KPIs) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <!-- KPI 1: Operativos (Celeste) -->
             <div class="kpi-card border-b-4 border-[var(--azul-claro)]">
                 <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos Operativos</h3>
                 <p class="text-5xl font-extrabold text-[var(--azul-claro)] mt-3 drop-shadow-sm" id="kpi-operativos">0</p>
                 <p class="text-xs text-gray-400 mt-2 font-medium">En servicio y circulando</p>
             </div>
 
-            <!-- KPI 2: Operativos Sin Salida (Azul Medio) -->
             <div class="kpi-card border-b-4 border-[var(--azul-medio)]">
                 <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Operativos Sin Salida</h3>
                 <p class="text-5xl font-extrabold text-[var(--azul-medio)] mt-3 drop-shadow-sm" id="kpi-sin-salida">0</p>
                 <p class="text-xs text-gray-400 mt-2 font-medium">No salieron a servicio hoy</p>
             </div>
 
-            <!-- KPI 3: No Operativos / Taller (Azul Oscuro) -->
             <div class="kpi-card border-b-4 border-[var(--azul-oscuro)]">
                 <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">No Operativos / Taller</h3>
                 <p class="text-5xl font-extrabold text-[var(--azul-oscuro)] mt-3 drop-shadow-sm" id="kpi-taller">0</p>
                 <p class="text-xs text-gray-400 mt-2 font-medium">Con novedades mecánicas</p>
             </div>
 
-            <!-- KPI 4: Para Baja (Azul Marino Profundo) -->
             <div class="kpi-card border-b-4 border-[var(--azul-marino)]">
                 <h3 class="text-gray-500 font-bold uppercase text-xs tracking-wider">Vehículos para Baja</h3>
                 <p class="text-5xl font-extrabold text-[var(--azul-marino)] mt-3 drop-shadow-sm" id="kpi-bajas">0</p>
@@ -162,7 +153,6 @@
         </div>
     </div>
 
-    <!-- Contenedor del Gráfico de Líneas -->
     <div class="max-w-7xl mx-auto glass-panel p-6 rounded-xl shadow-lg mb-8">
         <h2 class="text-xl font-bold text-white uppercase tracking-wide border-b-2 border-[var(--azul-claro)] pb-2 inline-block mb-6">
             Evolución de Estado (Últimos 30 días)
@@ -172,10 +162,8 @@
         </div>
     </div>
 
-    <!-- Contenedor de Tablas de Detalle -->
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         
-        <!-- Tabla: Vehículos Operativos -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-claro)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
                 Vehículos Operativos
@@ -191,13 +179,11 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-operativos">
-                        <!-- Inyectado por JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Tabla: Operativos Sin Salida -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-medio)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
                 Operativos Sin Salida
@@ -213,13 +199,11 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-sin-salida">
-                        <!-- Inyectado por JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Tabla: No Operativos / Taller -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-oscuro)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
                 No Operativos / Taller
@@ -235,13 +219,11 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-taller">
-                        <!-- Inyectado por JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Tabla: Vehículos Para Baja -->
         <div class="glass-panel p-4 rounded-xl shadow-lg flex flex-col h-96 border-t-4 border-[var(--azul-marino)]">
             <h3 class="text-lg font-bold text-[var(--azul-claro)] mb-3 uppercase tracking-wider">
                 Vehículos para Baja
@@ -257,18 +239,27 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-bajas">
-                        <!-- Inyectado por JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
 
     </div>
 
-    <!-- Script de Inyección y Procesamiento de Datos -->
     <script>
         let datosGlobales = []; // Almacena todos los datos del JSON
         let graficoEvolucion = null; // Instancia de Chart.js
+
+        // Actualizar reloj en tiempo real
+        function actualizarReloj() {
+            const el = document.getElementById("fecha-actualizacion");
+            if (el) {
+                const ahora = new Date();
+                el.innerText = `Actualizado: ${ahora.toLocaleDateString('es-AR')} ${ahora.toLocaleTimeString('es-AR')}`;
+            }
+        }
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
 
         // Utilidad ROBUSTA para convertir cualquier fecha extraña de Excel a YYYY-MM-DD
         function parsearFecha(fechaStr) {
@@ -629,6 +620,13 @@
                         razón: String(raz).trim()
                     };
                 });
+
+                // === NUEVO FILTRO: EXCLUIR ÁREAS ESPECÍFICAS ===
+                datosGlobales = datosGlobales.filter(item => {
+                    const dir = item.dirección.toUpperCase();
+                    return dir !== "CPU OPERATIVOS" && dir !== "FUNCIONARIOS";
+                });
+                // ===============================================
 
                 // Obtener fechas únicas que hayan sido parseadas correctamente (YYYY-MM-DD)
                 const fechasValidas = datosGlobales
