@@ -369796,8 +369796,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "17/06/2026"
   },
   {
@@ -369886,8 +369886,8 @@
     "dominio": "A145FPJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "17/06/2026"
   },
   {
@@ -369895,8 +369895,8 @@
     "dominio": "A179FSE",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "17/06/2026"
   },
   {
@@ -369966,7 +369966,7 @@
     "dirección": "CPU",
     "dominio": "A179FSV",
     "tipo": "Moto",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "17/06/2026"
@@ -369976,8 +369976,8 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "17/06/2026"
   },
   {
@@ -370362,8 +370362,8 @@
     "dirección": "CPU",
     "dominio": "AE774GQ",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370416,8 +370416,8 @@
     "dirección": "CPU",
     "dominio": "AE774GZ",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370506,8 +370506,8 @@
     "dirección": "CPU",
     "dominio": "AE899KX",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370596,8 +370596,8 @@
     "dirección": "CPU",
     "dominio": "AE914AV",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370731,8 +370731,8 @@
     "dirección": "CPU",
     "dominio": "AF301SJ",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370894,7 +370894,7 @@
     "dominio": "AF335BF",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -370992,8 +370992,8 @@
     "dirección": "CPU ",
     "dominio": "AF520QM",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -372981,9 +372981,9 @@
     "dirección": "LOMAS PREVIENE",
     "dominio": "AE459RV",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "17/06/2026"
   },
   {
@@ -373350,8 +373350,8 @@
     "dirección": "LOMAS PREVIENE",
     "dominio": "AE926CN",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "17/06/2026"
   },
@@ -379488,8 +379488,8 @@
     "dirección": "SECRETARÍA DE SEGURIDAD",
     "dominio": "OJB481",
     "tipo": "Auto",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": "Falla mecánica",
     "fecha": "17/06/2026"
   },
