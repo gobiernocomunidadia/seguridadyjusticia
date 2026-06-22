@@ -429494,7 +429494,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -429519,8 +429519,8 @@
     "dirección": "CPU",
     "dominio": "AE914AH",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "22/06/2026"
   },
@@ -429728,7 +429728,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -429791,7 +429791,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -429818,7 +429818,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -429872,7 +429872,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -429953,7 +429953,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430052,7 +430052,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430079,7 +430079,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430088,7 +430088,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430106,7 +430106,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430367,7 +430367,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430394,7 +430394,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430511,7 +430511,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430520,7 +430520,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430547,7 +430547,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430556,7 +430556,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430583,7 +430583,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430592,7 +430592,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430619,7 +430619,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430655,7 +430655,7 @@
     "tipo": "Patrulla",
     "estado": "Operativo",
     "no_salió_a_servicio_hoy": false,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430673,7 +430673,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430699,8 +430699,8 @@
     "dominio": "AH375EQ",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": "Falla mecánica",
+    "no_salió_a_servicio_hoy": true,
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430709,7 +430709,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430727,7 +430727,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430780,7 +430780,7 @@
     "dominio": "AH418SA",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "22/06/2026"
   },
@@ -430817,7 +430817,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430835,16 +430835,16 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
     "dirección": "CPU",
     "dominio": "AH418SP",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430889,7 +430889,7 @@
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -430934,7 +430934,7 @@
     "tipo": "Patrulla",
     "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "Falla mecánica",
+    "razón": null,
     "fecha": "22/06/2026"
   },
   {
@@ -432147,7 +432147,7 @@
     "dirección": "LOMAS PREVIENE",
     "dominio": "AE855IA",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": "Falla mecánica",
     "fecha": "22/06/2026"
