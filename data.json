@@ -438592,8 +438592,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "23/06/2026"
   },
   {
@@ -438682,8 +438682,8 @@
     "dominio": "A145FPJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "23/06/2026"
   },
   {
@@ -438772,17 +438772,17 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "23/06/2026"
   },
   {
     "dirección": "CPU",
     "dominio": "A179FSY",
     "tipo": "Moto",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "razón": null,
     "fecha": "23/06/2026"
   },
   {
@@ -439743,8 +439743,8 @@
     "dirección": "CPU",
     "dominio": "AH375EZ",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "23/06/2026"
   },
@@ -440436,8 +440436,8 @@
     "dirección": "CPU",
     "dominio": "AH375EG",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "23/06/2026"
   },
@@ -440490,8 +440490,8 @@
     "dirección": "CPU",
     "dominio": "AH375EN",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "23/06/2026"
   },
@@ -440599,7 +440599,7 @@
     "dominio": "AH418SA",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "23/06/2026"
   },
@@ -440625,8 +440625,8 @@
     "dirección": "CPU",
     "dominio": "AH418SI",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "23/06/2026"
   },
