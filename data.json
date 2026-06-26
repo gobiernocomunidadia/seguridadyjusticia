@@ -468031,8 +468031,8 @@
     "dominio": "A125WXJ",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "26/06/2026"
   },
   {
@@ -468211,8 +468211,8 @@
     "dominio": "A179FSX",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "26/06/2026"
   },
   {
@@ -468966,8 +468966,8 @@
     "dirección": "CPU",
     "dominio": "AF301SJ",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "26/06/2026"
   },
@@ -469029,8 +469029,8 @@
     "dirección": "CPU",
     "dominio": "AF301SR",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "26/06/2026"
   },
@@ -469236,7 +469236,7 @@
     "dirección": "CPU",
     "dominio": "AF520QQ",
     "tipo": "Patrulla",
-    "estado": "Operativo",
+    "estado": "Sin funcionar - parado",
     "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "26/06/2026"
@@ -469983,8 +469983,8 @@
     "dirección": "CPU",
     "dominio": "AH375ET",
     "tipo": "Patrulla",
-    "estado": "Taller externo",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "26/06/2026"
   },
@@ -469992,7 +469992,7 @@
     "dirección": "CPU",
     "dominio": "AH375EU",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
+    "estado": "Operativo",
     "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "26/06/2026"
