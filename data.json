@@ -497488,8 +497488,8 @@
     "dominio": "A125WXR",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
-    "razón": null,
+    "no_salió_a_servicio_hoy": true,
+    "razón": "No programado / Sin servicio asignado",
     "fecha": "30/06/2026"
   },
   {
@@ -497632,8 +497632,8 @@
     "dominio": "A179FSV",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "30/06/2026"
   },
   {
@@ -497937,8 +497937,8 @@
     "dirección": "CPU",
     "dominio": "AE452IF",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "30/06/2026"
   },
@@ -499341,9 +499341,9 @@
     "dirección": "CPU",
     "dominio": "AH375EK",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "En taller",
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "30/06/2026"
   },
   {
@@ -499387,7 +499387,7 @@
     "dominio": "AH375EQ",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "30/06/2026"
   },
@@ -499530,8 +499530,8 @@
     "dirección": "CPU",
     "dominio": "AH418SP",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "30/06/2026"
   },
@@ -499602,9 +499602,9 @@
     "dirección": "CPU",
     "dominio": "AH418SX",
     "tipo": "Patrulla",
-    "estado": "Operativo",
+    "estado": "Taller externo",
     "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "razón": "En taller",
     "fecha": "30/06/2026"
   },
   {
