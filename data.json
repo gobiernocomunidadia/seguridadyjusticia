@@ -507298,8 +507298,8 @@
     "dominio": "A125WXR",
     "tipo": "Moto",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
-    "razón": "No programado / Sin servicio asignado",
+    "no_salió_a_servicio_hoy": false,
+    "razón": null,
     "fecha": "01/07/2026"
   },
   {
@@ -508477,7 +508477,7 @@
     "dominio": "AF520QQ",
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": false,
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -508638,8 +508638,8 @@
     "dirección": "CPU",
     "dominio": "AF723YQ",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -508981,7 +508981,7 @@
     "dominio": "AF846XI",
     "tipo": "Patrulla",
     "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": false,
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -509052,8 +509052,8 @@
     "dirección": "CPU",
     "dominio": "AH223SD",
     "tipo": "Patrulla",
-    "estado": "Sin funcionar - parado",
-    "no_salió_a_servicio_hoy": true,
+    "estado": "Operativo",
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -509133,8 +509133,8 @@
     "dirección": "CPU",
     "dominio": "AH375EI",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Taller externo",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -509233,7 +509233,7 @@
     "dominio": "AH375EU",
     "tipo": "Patrulla",
     "estado": "Operativo",
-    "no_salió_a_servicio_hoy": true,
+    "no_salió_a_servicio_hoy": false,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -509250,8 +509250,8 @@
     "dirección": "CPU",
     "dominio": "AH375EW",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
@@ -509403,8 +509403,8 @@
     "dirección": "CPU",
     "dominio": "AH418SW",
     "tipo": "Patrulla",
-    "estado": "Operativo",
-    "no_salió_a_servicio_hoy": false,
+    "estado": "Sin funcionar - parado",
+    "no_salió_a_servicio_hoy": true,
     "razón": null,
     "fecha": "01/07/2026"
   },
